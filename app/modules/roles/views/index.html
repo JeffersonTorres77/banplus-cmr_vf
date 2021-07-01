@@ -1,0 +1,120 @@
+{% extends template('adminlte') %}
+
+{% block js %}
+<script src="{{ public_file('index.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="p-3">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                    Roles
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm mb-0 table-hover table-bordered w-100 rounded" id="table-roles">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Usuarios</th>
+                            <th class="text-center">Opc.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center" colspan="100">
+                                <h5 class="mb-0 p-3">. . .</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODAL EDITAR -->
+<div class="modal fade" id="modal-editar">
+    <div class="modal-dialog modal-dialog-centered modal-scrollable">
+        <form class="modal-content">
+            <div class="modal-header bg-success">
+                <div class="modal-title h5">Modificar <b data-key="nombre"></b></div>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <input type="hidden" name="id" value-key="id">
+
+                <div class="form-group row">
+                    <label class="col-md-2 col-form-label">ID</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" disabled value-key="id">
+                    </div>
+                </div>
+
+                <div class="form-group row mb-0">
+                    <label class="col-md-2 col-form-label">Nombre</label>
+                    <div class="col-md-10">
+                        <input type="text" class="form-control" name="nombre" placeholder="Nombre..." value-key="nombre" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-outline-secondary" style="width: 100px;" type="button" data-dismiss="modal">
+                    Cerrar
+                </button>
+
+                <button class="btn btn-success" style="width: 100px;" type="submit">
+                    Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL PERMISOS -->
+<div class="modal fade" id="modal-permisos">
+    <div class="modal-dialog modal-dialog-centered modal-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <div class="modal-title h5">Permisos de <b data-key="nombre"></b></div>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-sm mb-0 w-100 table-bordered table-hover table-striped rounded" id="table-modificar-permisos">
+                        <thead>
+                            <tr>
+                                <th style="width: auto;" class="text-left">Descripción</th>
+                                <th style="width: 70px;" class="text-center">Permitido</th>
+                                <th style="width: 70px;" class="text-center">Opc.</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td colspan="100">
+                                    <h5 class="text-center mb-0 p-3">. . .</h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="modal-footer justify-content-center">
+                <button class="btn btn-outline-secondary" style="width: 100px;" type="button" data-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

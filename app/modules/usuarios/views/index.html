@@ -1,0 +1,173 @@
+{% extends template('adminlte') %}
+
+{% block js %}
+<script src="{{ public_file('index.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<section class="p-3">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="card-title">
+                    Usuarios
+                </div>
+
+                <div>
+                    <button class="btn btn-sm btn-primary" type="button" style="width: 132px;" data-toggle="modal" data-target="#modal-registrar-regular">
+                        <i class="fas fa-sm fa-user-plus mr-1"></i> Usuario regular
+                    </button>
+                    <button class="btn btn-sm btn-primary" type="button" style="width: 132px;" data-toggle="modal" data-target="#modal-registrar-red">
+                        <i class="fab fa-windows fa-sm mr-1"></i> Directorio activo
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-sm mb-0 table-hover table-bordered w-100 rounded" id="table-usuarios">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Activo</th>
+                            <th class="text-center">Opc.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center" colspan="100">
+                                <h5 class="mb-0 p-3">. . .</h5>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MODAL REGISTRAR REGULAR -->
+<div class="modal fade" id="modal-registrar-regular">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="mb-0">Registrar usuario regular</h5>
+            </div>
+
+            <div class="modal-body">
+                <p>Para continuar con el registro, complete los siguientes datos:</p>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Nombres</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="nombres" required placeholder="Nombres...">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Apellidos</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="apellidos" required placeholder="Apellidos...">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Correo</label>
+                    <div class="col-md-9">
+                        <input type="mail" class="form-control" name="correo" required placeholder="Correo...">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Cargo</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="cargo" placeholder="Cargo...">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Departamento</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="departamento" placeholder="Departamento...">
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Usuario</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="usuario" required placeholder="Usuario...">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Contraseña</label>
+                    <div class="col-md-9">
+                        <input type="password" class="form-control" name="clave" required placeholder="Contraseña...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" data-dismiss="modal" type="button" style="width: 100px;">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary" type="submit" style="width: 100px;">
+                    Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL REGISTRAR RED -->
+<div class="modal fade" id="modal-registrar-red">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="mb-0">Registrar usuario de red</h5>
+            </div>
+
+            <div class="modal-body">
+                <p>Para continuar con el registro, complete los siguientes datos:</p>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Usuario nuevo</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="nuevo_usuario" required placeholder="Usuario a registrar...">
+                    </div>
+                </div>
+
+                <hr>
+
+                <p>Para confirmar la operación complete los siguientes campo con un usuario de la RED:</p>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Usuario</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="usuario" required placeholder="Usuario..." value="{{ usuario.departamento }}">
+                    </div>
+                </div>
+
+                <div class="form-group row mb-0">
+                    <label class="col-md-3 col-form-label">Contraseña</label>
+                    <div class="col-md-9">
+                        <input type="password" class="form-control" name="clave" required placeholder="Contraseña...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" data-dismiss="modal" type="button" style="width: 100px;">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary" type="submit" style="width: 100px;">
+                    Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

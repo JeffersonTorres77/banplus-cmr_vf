@@ -1,0 +1,106 @@
+/*
+    Toast
+*/
+.toasts-top-right {
+    min-width: 350px;
+    max-width: 350px;
+    width: 350px;
+    padding: 5px;
+}
+
+.toast {
+    max-width: 100%;
+}
+
+@media screen and (max-width: 576px) {
+    .toasts-top-right {
+        min-width: 100%;
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+.toasts-top-right {
+    z-index: 1100 !important;
+}
+
+/*
+    Card header Login
+*/
+.card-header a:hover {
+    color: inherit !important;
+}
+
+/*
+    Modal Loader
+*/
+@media screen and (max-width: 576px) {
+    #modal-loader .modal-dialog {
+        margin: 0.5rem auto !important;
+    }
+}
+
+#modal-loader .modal-dialog {
+    width: 10rem !important;
+}
+
+#modal-loader .modal-content {
+    height: 10rem !important;
+}
+
+#modal-loader .spinner-grow {
+    width: 3rem;
+    height: 3rem;
+}
+
+/*
+    Botones
+*/
+.btn-100px {
+    width: 100px !important;
+}
+
+.brand-link {
+    font-size: 1.1rem !important;
+    padding: .93rem .5rem !important;
+}
+
+.user-panel .image {
+    padding-left: .87rem !important;
+}
+
+.control-sidebar, .control-sidebar::before {
+    bottom: calc(2.6rem + 0px) !important;
+}
+
+.btn-opc {
+    width: 32px;
+    height: 32px;
+}
+
+.navbar-success {
+    background-color: #a4c639 !important;
+}
+
+.navbar-dark {
+    border-color: #99bb2f !important;
+}
+
+.brand-link {
+    padding: .83rem .5rem !important;
+}
+
+.brand-text {
+    position: relative;
+    top: 2px;
+    color: white !important;
+}
+
+.sidebar-light-lime .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #a4c639 !important;
+    color: #ffffff !important;
+}
+
+.sidebar-mini.sidebar-collapse .nav-sidebar .nav-header {
+    display: block !important;
+}

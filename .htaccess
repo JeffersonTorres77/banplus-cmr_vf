@@ -1,0 +1,7 @@
+#Activar RewriteEngine
+RewriteEngine on
+
+#Reescribir la URL solicitada por el usuario
+RewriteRule ^public/(.+)?$ public/$1 [QSA,L]
+RewriteRule ^app/modules/([a-z0-9-_]+)/public/(.+)?$ app/modules/$1/public/$2 [QSA,L]
+RewriteRule ^(.+)?$ index.php?url=$1 [QSA,L]

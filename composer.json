@@ -1,0 +1,8 @@
+{
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.17",
+        "dompdf/dompdf": "^1.0",
+        "illuminate/database": "^8.44",
+        "twig/twig": "^3.3"
+    }
+}

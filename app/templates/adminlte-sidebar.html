@@ -1,0 +1,62 @@
+<ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-flat" data-widget="treeview" role="menu" data-accordion="false">
+    <li class="nav-item">
+        <a href="{{ BASE_URL }}" class="nav-link {{ (CONTROLADOR == 'home' and METODO == 'index') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-home"></i>
+            <p>Inicio</p>
+        </a>
+    </li>
+
+    <!-- GESTION DE CONTACTO -->
+    {% if PERMISOS.menu_gestion_contacto %}
+    <li class="nav-item">
+        <a
+            href="{{ BASE_URL }}/Gestion_Contacto/"
+            class="nav-link {{ (CONTROLADOR == 'gestion_contacto') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-address-book"></i>
+            <p>
+                Gestión de contacto
+            </p>
+        </a>
+    </li>
+    {% endif %}
+
+    <!-- GESTION DE CONTACTO - GERENCIA -->
+    {% if PERMISOS.menu_gestion_contacto_gerencia %}
+    <li class="nav-item">
+        <a
+            href="{{ BASE_URL }}/Gestion_Contacto_Gerencia/"
+            class="nav-link {{ (CONTROLADOR == 'gestion_contacto_gerencia') ? 'active' : '' }}">
+            <i class="nav-icon far fa-address-book"></i>
+            <p>
+                Gestión de contacto
+            </p>
+        </a>
+    </li>
+    {% endif %}
+
+    {% if PERMISOS.menu_roles or PERMISOS.menu_usuarios %}
+        <li class="nav-header">Sistema</li>
+
+        {% if PERMISOS.menu_roles %}
+        <li class="nav-item">
+            <a
+                href="{{ BASE_URL }}/Roles/"
+                class="nav-link {{ (CONTROLADOR == 'roles') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-key"></i>
+                <p>Roles</p>
+            </a>
+        </li>
+        {% endif %}
+
+        {% if PERMISOS.menu_usuarios %}
+        <li class="nav-item">
+            <a
+                href="{{ BASE_URL }}/Usuarios/"
+                class="nav-link {{ (CONTROLADOR == 'usuarios') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-users"></i>
+                <p>Usuarios</p>
+            </a>
+        </li>
+        {% endif %}
+    {% endif %}
+</ul>

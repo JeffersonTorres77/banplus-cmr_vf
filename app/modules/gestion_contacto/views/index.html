@@ -1,0 +1,144 @@
+{% extends template('adminlte') %}
+
+{% block js %}
+<script src="{{ public_file('index.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="p-3">
+    <div class="card card-primary card-outline">
+        <div class="card-header">
+            <div class="card-title">Gestión de Contacto – Centro de Atención Banca Persona</div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <!-- FILA 1 -->
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Cedula</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <form class="input-group input-group-sm" id="form-search">
+                                <input type="text" class="form-control" name="cedula" required placeholder="Cedula...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit"> <i class="fas fa-search"></i> </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Celular</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Gte. Bca. P.</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FILA 2 -->
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Nombre</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Otro Telf</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Gte. Jurídico</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FILA 3 -->
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Segmento</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">Correo</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label">VPR Jurídico</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" class="form-control form-control-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FILA 4 -->
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="mb-1 text-primary">Vinculación Natural</label>
+                        <textarea class="form-control" cols="30" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="mb-1 text-primary">Vinculación Jurídica</label>
+                        <textarea class="form-control" cols="30" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <!-- FILA 5 -->
+                <div class="col-12">
+                    <label class="mb-1">Gestión Histórica</label>
+                    <table class="table table-sm table-bordered table-hover">
+                        <thead class="table-primary">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Ejecutivo</th>
+                                <th>Tipo Llamada</th>
+                                <th>Gestión</th>
+                                <th>Tipo Gestión</th>
+                                <th>Comentario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="100">
+                                    <h5 class="text-center mb-0 p-3">. . .</h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="w-100 text-center">
+                <a href="#" class="btn btn-primary">Cargar Nueva Gestión</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

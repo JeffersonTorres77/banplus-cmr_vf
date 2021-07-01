@@ -1,0 +1,23 @@
+{% extends template('adminlte') %}
+
+{% block css %}
+<style>
+    .logo-home { width: 60%; }
+    @media screen and (min-width: 576px) { .logo-home { width: 50%; } }
+    @media screen and (min-width: 768px) { .logo-home { width: 40%; } }
+    @media screen and (min-width: 992px) { .logo-home { width: 30%; } }
+    @media screen and (min-width: 1200px) { .logo-home { width: 20%; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Main content -->
+<section class="content p-3" style="height: calc(100vh - 57px - 41px)">
+    <div class="card mb-0 h-100">
+        <div class="card-body d-flex justify-content-center align-items-center">
+            <img src="{{ BASE_URL }}/public/core/img/logo.png" alt="Banplus" class="logo-home">
+        </div>
+    </div>
+</section>
+<!-- /.content -->
+{% endblock %}
