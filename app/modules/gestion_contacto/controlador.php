@@ -23,8 +23,9 @@ class controlador
         if($accion == NULL) throw new Exception('La acción no se ha enviado.');
         switch(strtolower($accion))
         {
-            case: 'consultar_datos':
+            case 'consultar_datos':
                 $cedula = Request::input('cedula', $requerido = TRUE);
+                throw new Exception('En desarrollo...');
             break;
 
             /**
