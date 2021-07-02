@@ -19,6 +19,7 @@ class table_president
             $table->string('ci')->primary();
             $table->string('nombre');
             $table->string('celular');
+            $table->string('otro_celular');
             $table->string('correo');
             $table->string('segmento');
             $table->string('monto');
@@ -60,6 +61,7 @@ class table_president
                 'ci'                        => '1',
                 'nombre'                    => 'a',
                 'celular'                   => '414',
+                'otro_celular'              => '414123',
                 'correo'                    => 'a@GMAIL.COM',
                 'segmento'                  => 'BLACK',
                 'monto'                     => '300',
@@ -88,6 +90,7 @@ class table_president
                 'ci'                        => '2',
                 'nombre'                    => 'b',
                 'celular'                   => '416',
+                'otro_celular'              => '416123',
                 'correo'                    => 'b@GMAIL.COM',
                 'segmento'                  => 'BLACK',
                 'monto'                     => '500',
@@ -116,6 +119,7 @@ class table_president
                 'ci'                        => '3',
                 'nombre'                    => 'c',
                 'celular'                   => '414',
+                'otro_celular'              => '414456',
                 'correo'                    => 'c@HOTMAIL.COM',
                 'segmento'                  => 'BLACK',
                 'monto'                     => '500',
@@ -144,6 +148,7 @@ class table_president
                 'ci'                        => '4',
                 'nombre'                    => 'd',
                 'celular'                   => '416',
+                'otro_celular'              => '416456',
                 'correo'                    => 'd@GMAIL.COM',
                 'segmento'                  => 'BLACK',
                 'monto'                     => '500',
