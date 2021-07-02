@@ -12,3 +12,4 @@ $table_contactos->down()->up()->default();
 $table_financieros_juridico->down()->up()->default();
 $table_financieros_natural->down()->up()->default();
 $table_segmentos->down()->up()->default();
+$table_president->down()->up()->default();
