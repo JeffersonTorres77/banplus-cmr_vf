@@ -11,7 +11,14 @@ $("#form-search").on('submit', function(e) {
             Alerta.error('Consultar datos', mensaje);
         },
         ok(data) {
-            console.log(data);
+            $("#celular").val(data.celular);
+            $("#gerente_banca_persona").val(data.gerente_atencion_origen);
+            $("#nombre").val(data.nombre);
+            $("#otro_telefono").val(data.otro_celular);
+            $("#gerente_juridico").val(data.gerente_atencion);
+            $("#segmento").val(data.segmento);
+            $("#correo").val(data.correo);
+            $("#vpr_juridico").val(data.region_origen);
         },
         final() {
             Loader.hide();

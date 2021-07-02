@@ -25,7 +25,11 @@ class controlador
         {
             case 'consultar_datos':
                 $cedula = Request::input('cedula', $requerido = TRUE);
-                throw new Exception('En desarrollo...');
+
+                $objPresident = President::where('ci', $cedula)->first();
+                if($objPresident == NULL) throw new Exception('Cedula no encontrada.');
+
+                return Response::json( $objPresident );
             break;
 
             /**
