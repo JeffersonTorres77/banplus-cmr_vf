@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+
 require_once(__DIR__."/../core/panel.php");
 
 // Iniciamos la base de datos
