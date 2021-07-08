@@ -1,5 +1,16 @@
 {% extends template('adminlte') %}
 
+{% block css %}
+<style>
+    .vinculacion {
+        min-height: 110px;
+        height: 110px;
+        max-height: 110px;
+        overflow: auto;
+    }
+</style>
+{% endblock %}
+
 {% block js %}
 <script src="{{ public_file('index.js') }}"></script>
 {% endblock %}
@@ -30,7 +41,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Celular</label>
                         <div class="col-md-8 d-flex align-items-center">
-                            <input type="text" id="celular" class="form-control form-control-sm text-dark bg-light" disabled>
+                            <input type="text" data="celular" class="form-control form-control-sm text-dark bg-light" disabled>
                         </div>
                     </div>
                 </div>
@@ -38,7 +49,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Gte. Bca. P.</label>
                         <div class="col-md-8 d-flex align-items-center">
-                            <input type="text" id="gerente_banca_persona" class="form-control form-control-sm text-dark bg-light" disabled>
+                            <input type="text" data="gerente_banca_persona" class="form-control form-control-sm text-dark bg-light" disabled>
                         </div>
                     </div>
                 </div>
@@ -48,7 +59,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Nombre</label>
                         <div class="col-md-8 d-flex align-items-center">
-                            <input type="text" id="nombre" class="form-control form-control-sm text-dark bg-light" disabled>
+                            <input type="text" data="nombre" class="form-control form-control-sm text-dark bg-light" disabled>
                         </div>
                     </div>
                 </div>
@@ -56,7 +67,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Otro Telf</label>
                         <div class="col-md-8 d-flex align-items-center">
-                            <input type="text" id="otro_telefono" class="form-control form-control-sm text-dark bg-light" disabled>
+                            <input type="text" data="otro_telefono" class="form-control form-control-sm text-dark bg-light" disabled>
                         </div>
                     </div>
                 </div>
@@ -64,7 +75,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Gte. Jurídico</label>
                         <div class="col-md-8 d-flex align-items-center">
-                            <input type="text" id="gerente_juridico" class="form-control form-control-sm text-dark bg-light" disabled>
+                            <input type="text" data="gerente_juridico" class="form-control form-control-sm text-dark bg-light" disabled>
                         </div>
                     </div>
                 </div>
@@ -74,7 +85,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Segmento</label>
                         <div class="col-md-8 d-flex align-items-center">
-                            <input type="text" id="segmento" class="form-control form-control-sm text-dark bg-light" disabled>
+                            <input type="text" data="segmento" class="form-control form-control-sm text-dark bg-light" disabled>
                         </div>
                     </div>
                 </div>
@@ -82,7 +93,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Correo</label>
                         <div class="col-md-8 d-flex align-items-center">
-                            <input type="text" id="correo" class="form-control form-control-sm text-dark bg-light" disabled>
+                            <input type="text" data="correo" class="form-control form-control-sm text-dark bg-light" disabled>
                         </div>
                     </div>
                 </div>
@@ -90,7 +101,7 @@
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">VPR Jurídico</label>
                         <div class="col-md-8 d-flex align-items-center">
-                            <input type="text" id="vpr_juridico" class="form-control form-control-sm text-dark bg-light" disabled>
+                            <input type="text" data="vpr_juridico" class="form-control form-control-sm text-dark bg-light" disabled>
                         </div>
                     </div>
                 </div>
@@ -99,14 +110,34 @@
                 <div class="col-6">
                     <div class="form-group">
                         <label class="mb-1 text-primary">Vinculación Natural</label>
-                        <textarea class="form-control" cols="30" rows="4"></textarea>
+                        <div class="form-control vinculacion">
+                            <div class="mb-2">
+                                <i class="fas fa-flag mr-1" id="flag-natural-bs"></i> Cuentas en Bs (corriente o ahorro)
+                            </div>
+                            <div class="mb-2">
+                                <i class="fas fa-flag mr-1" id="flag-natural-divisas"></i> Cuentas en Divisas (dólares o euros)
+                            </div>
+                            <div>
+                                <i class="fas fa-flag mr-1" id="flag-natural-bi"></i> BI
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="col-6">
                     <div class="form-group">
                         <label class="mb-1 text-primary">Vinculación Jurídica</label>
-                        <textarea class="form-control" cols="30" rows="4"></textarea>
+                        <div class="form-control vinculacion">
+                            <div class="mb-2">
+                                <i class="fas fa-flag mr-1" id="flag-juridica-bs"></i> Cuentas en Bs (corriente o ahorro)
+                            </div>
+                            <div class="mb-2">
+                                <i class="fas fa-flag mr-1" id="flag-juridica-divisas"></i> Cuentas en Divisas (dólares o euros)
+                            </div>
+                            <div>
+                                <i class="fas fa-flag mr-1" id="flag-juridica-bi"></i> BI
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -136,9 +167,129 @@
             </div>
 
             <div class="w-100 text-center">
-                <a href="#" class="btn btn-primary">Cargar Nueva Gestión</a>
+                <button class="btn btn-primary" id="btn-nueva-gestion">Cargar Nueva Gestión</button>
+            </div>
+
+            <div class="alert alert-light mb-0 mt-3">
+                <div class="row">
+                    <div class="col-4 font-weight-bold text-center">
+                        <i class="fas fa-flag text-success mr-1"></i>
+                        Abierta con saldo
+                    </div>
+                    <div class="col-4 font-weight-bold text-center">
+                        <i class="fas fa-flag text-warning mr-1"></i>
+                        Abierta
+                    </div>
+                    <div class="col-4 font-weight-bold text-center">
+                        <i class="fas fa-flag text-danger mr-1"></i>
+                        Sin el producto
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- MODAL REGISTRO GESTION -->
+<div class="modal fade" id="modal-registro-gestion">
+    <div class="modal-dialog modal-dialog-scrolalble modal-dialog-centered modal-xl">
+        <form class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="mb-0">Cargar nueva gestión</h5>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- FILA 1 -->
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">Cedula</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="cedula" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">Celular</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="celular" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">Gte. Bca. P.</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="gerente_banca_persona" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FILA 2 -->
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">Nombre</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="nombre" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">Otro Telf</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="otro_telefono" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">Gte. Jurídico</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="gerente_juridico" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FILA 3 -->
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">Segmento</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="segmento" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">Correo</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="correo" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-right">VPR Jurídico</label>
+                            <div class="col-md-8 d-flex align-items-center">
+                                <input type="text" data="vpr_juridico" class="form-control form-control-sm text-dark bg-light" disabled>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal" style="width: 100px;">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary" type="submit" style="width: 100px;">
+                    Registrar
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock %}

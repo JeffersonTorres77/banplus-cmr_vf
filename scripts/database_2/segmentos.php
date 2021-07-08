@@ -26,15 +26,15 @@ class table_segmentos
         // DB::unprepared("SET IDENTITY_INSERT {$this->table} ON");
         $users = DB::table($this->table)->insert([
             [
-                'CI'        => '123456',
+                'CI'        => '1',
                 'Segmento'  => 'President',
             ],
             [
-                'CI'        => '987654',
+                'CI'        => '2',
                 'Segmento'  => 'Masivo',
             ],
             [
-                'CI'        => '555444',
+                'CI'        => '3',
                 'Segmento'  => 'Oportunidad Top',
             ]
         ]);

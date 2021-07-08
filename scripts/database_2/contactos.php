@@ -29,21 +29,21 @@ class table_contactos
         // DB::unprepared("SET IDENTITY_INSERT {$this->table} ON");
         $users = DB::table($this->table)->insert([
             [
-                'CI'            => '123456',
+                'CI'            => '1',
                 'Nro_Telefono'  => '581231231212',
                 'Tipo'          => 'Móvil',
                 'Operadora'     => 'Digitel',
                 'Email'         => 'correo@gmail.com',
             ],
             [
-                'CI'            => '987654',
+                'CI'            => '2',
                 'Nro_Telefono'  => '581231234343',
                 'Tipo'          => 'Fijo',
                 'Operadora'     => 'Fijo',
                 'Email'         => 'correo@gmail.com',
             ],
             [
-                'CI'            => '555444',
+                'CI'            => '3',
                 'Nro_Telefono'  => '581231237777',
                 'Tipo'          => 'Móvil',
                 'Operadora'     => 'Movistar',

@@ -40,7 +40,7 @@ class table_financieros_juridico
         // DB::unprepared("SET IDENTITY_INSERT {$this->table} ON");
         $users = DB::table($this->table)->insert([
             [
-                'CI'                    => '123456',
+                'CI'                    => '1',
                 'Firmante'              => '1',
                 'Accionista'            => '0',
                 'Porcentaje_Acciones'   => '0',
@@ -55,10 +55,10 @@ class table_financieros_juridico
                 'Apertura'              => '10/9/2010',
                 'Promedio_Mes_1'        => '23423.34',
                 'Promedio_Mes_2'        => '23432',
-                'Promedio_Mes_3'        => '54564.3',
+                'Promedio_Mes_3'        => '64564.3',
             ],
             [
-                'CI'                    => '654321',
+                'CI'                    => '2',
                 'Firmante'              => '1',
                 'Accionista'            => '1',
                 'Porcentaje_Acciones'   => '75',
@@ -76,7 +76,7 @@ class table_financieros_juridico
                 'Promedio_Mes_3'        => '56456.455',
             ],
             [
-                'CI'                    => '987654',
+                'CI'                    => '3',
                 'Firmante'              => '0',
                 'Accionista'            => '1',
                 'Porcentaje_Acciones'   => '50',

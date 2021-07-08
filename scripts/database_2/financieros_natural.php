@@ -34,7 +34,7 @@ class table_financieros_natural
         // DB::unprepared("SET IDENTITY_INSERT {$this->table} ON");
         $users = DB::table($this->table)->insert([
             [
-                'CI'                => '123456',
+                'CI'                => '1',
                 'Cuenta'            => '01741234567890123456',
                 'Moneda'            => 'Bolívar',
                 'Modalidad_Cuenta'  => 'Unipersonal',
@@ -46,7 +46,7 @@ class table_financieros_natural
                 'Promedio_Mes_3'    => '54564.3',
             ],
             [
-                'CI'                => '654321',
+                'CI'                => '2',
                 'Cuenta'            => '01740987654321987654',
                 'Moneda'            => 'Euro',
                 'Modalidad_Cuenta'  => 'Conjunta',
@@ -58,7 +58,7 @@ class table_financieros_natural
                 'Promedio_Mes_3'    => '56456.455',
             ],
             [
-                'CI'                => '987654',
+                'CI'                => '3',
                 'Cuenta'            => '01741234554321678900',
                 'Moneda'            => 'Dólar',
                 'Modalidad_Cuenta'  => 'Indistinta',

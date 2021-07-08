@@ -213,3 +213,15 @@ const DT_SPANISH = {
 $(document).on('collapsed.lte.pushmenu', function() {
     $.cookie('sidebar_collapse', 1);
 });
+
+
+/**
+ * Format Number
+ */
+function formatNumber(num, n = 2, s = '.', c = ',') {
+    num = Number(num);
+	var re = '\\d(?=(\\d{' + (3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+        num = num.toFixed(Math.max(0, ~~n));
+
+    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+}
