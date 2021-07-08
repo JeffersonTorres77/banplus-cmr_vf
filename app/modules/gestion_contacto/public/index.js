@@ -21,14 +21,15 @@ $("#form-search").on('submit', function(e) {
             // Boton nueva gestion
             $("#btn-nueva-gestion").removeAttr('cedula');
             // Limpiamos seccion 1
-            $("#celular").val('');
-            $("#gerente_banca_persona").val('');
-            $("#nombre").val('');
-            $("#otro_telefono").val('');
-            $("#gerente_juridico").val('');
-            $("#segmento").val('');
-            $("#correo").val('');
-            $("#vpr_juridico").val('');
+            $("[data=cedula]").val('');
+            $("[data=celular]").val('');
+            $("[data=gerente_banca_persona]").val('');
+            $("[data=nombre]").val('');
+            $("[data=otro_telefono]").val('');
+            $("[data=gerente_juridico]").val('');
+            $("[data=segmento]").val('');
+            $("[data=correo]").val('');
+            $("[data=vpr_juridico]").val('');
             // Limpiamos seccion 2
             for(let flag of FLAGS) {
                 $(`#${ flag.id }`).removeClass('text-success');

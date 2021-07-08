@@ -31,14 +31,25 @@ $("#form-search").on('submit', function(e) {
             // Boton nueva gestion
             $("#btn-nueva-gestion").removeAttr('cedula');
             // Limpiamos seccion 1
-            $("#celular").val('');
-            $("#gerente_banca_persona").val('');
-            $("#nombre").val('');
-            $("#otro_telefono").val('');
-            $("#gerente_juridico").val('');
-            $("#segmento").val('');
-            $("#correo").val('');
-            $("#vpr_juridico").val('');
+            $("[data=cedula]").val('');
+            $("[data=celular]").val('');
+            $("[data=gerente_banca_persona]").val('');
+            $("[data=nombre]").val('');
+            $("[data=otro_telefono]").val('');
+            $("[data=gerente_juridico]").val('');
+            $("[data=segmento]").val('');
+            $("[data=correo]").val('');
+            $("[data=vpr_juridico]").val('');
+            // Limpiamos seccion 2
+            VINCULACION_NATURAL.dolar.find('td:not(:first-child)').html('');
+            VINCULACION_NATURAL.euro.find('td:not(:first-child)').html('');
+            VINCULACION_NATURAL.corriente.find('td:not(:first-child)').html('');
+            VINCULACION_NATURAL.ahorro.find('td:not(:first-child)').html('');
+
+            VINCULACION_JURIDICA.dolar.find('td:not(:first-child)').html('');
+            VINCULACION_JURIDICA.euro.find('td:not(:first-child)').html('');
+            VINCULACION_JURIDICA.corriente.find('td:not(:first-child)').html('');
+            VINCULACION_JURIDICA.ahorro.find('td:not(:first-child)').html('');
         },
         ok(data) {
             // Principal
@@ -60,6 +71,7 @@ $("#form-search").on('submit', function(e) {
             if( seccion_1.correo == null )                   seccion_1.correo = valor_defecto;
             if( seccion_1.vpr_juridico == null )             seccion_1.vpr_juridico = valor_defecto;
             
+            $("[data=cedula]").val(seccion_1.cedula);
             $("[data=celular]").val(seccion_1.celular);
             $("[data=gerente_banca_persona]").val(seccion_1.gerente_banca_president);
             $("[data=nombre]").val(seccion_1.nombre);
