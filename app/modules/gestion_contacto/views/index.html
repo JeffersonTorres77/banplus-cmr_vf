@@ -8,6 +8,10 @@
         max-height: 110px;
         overflow: auto;
     }
+
+    #estatus_gestion > option[disabled] {
+        display: none;
+    }
 </style>
 {% endblock %}
 
@@ -144,25 +148,32 @@
                 <!-- FILA 5 -->
                 <div class="col-12">
                     <label class="mb-1">Gestión Histórica</label>
-                    <table class="table table-sm table-bordered table-hover">
-                        <thead class="table-primary">
-                            <tr>
-                                <th>Fecha</th>
-                                <th>Ejecutivo</th>
-                                <th>Tipo Llamada</th>
-                                <th>Gestión</th>
-                                <th>Tipo Gestión</th>
-                                <th>Comentario</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="100">
-                                    <h5 class="text-center mb-0 p-3">. . .</h5>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive mb-3 w-100">
+                        <table class="table table-sm table-bordered table-hover" id="tabla-gestion">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th class="text-truncate">Fecha de Asig.</th>
+                                    <th class="text-truncate">Fecha de Gest.</th>
+                                    <th class="text-truncate">Ejecutivo</th>
+                                    <th class="text-truncate">Tipo Llamada</th>
+                                    <th class="text-truncate">Tipo Gestión</th>
+                                    <th class="text-truncate">Estatus Gestión</th>
+                                    <th class="text-truncate">Comentario</th>
+                                    <th class="text-truncate">Resolucion Comite</th>
+                                    <th class="text-truncate">Fecha Comite</th>
+                                    <th class="text-truncate">Membresia President</th>
+                                    <th class="text-truncate">Fecha de pago</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="100">
+                                        <h5 class="text-center mb-0 p-3">. . .</h5>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -192,7 +203,7 @@
 
 <!-- MODAL REGISTRO GESTION -->
 <div class="modal fade" id="modal-registro-gestion">
-    <div class="modal-dialog modal-dialog-scrolalble modal-dialog-centered modal-xl">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
         <form class="modal-content">
             <div class="modal-header bg-primary">
                 <h5 class="mb-0">Cargar nueva gestión</h5>
@@ -278,8 +289,62 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <hr>
+                
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Fecha de Gestión</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" disabled value="{{ NOW|date('d/m/Y') }}">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Ejecutivo</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" disabled value="{{ USUARIO.nombres }} {{ USUARIO.apellidos }}">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Tipo de llamada</label>
+                    <div class="col-md-9">
+                        <select class="form-control" name="tipo_llamada" required>
+                            {% for tipo in tipos_llamadas %}
+                            <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Tipo de Gestión</label>
+                    <div class="col-md-9">
+                        <select class="form-control" name="tipo_gestion" id="tipo_gestion" required>
+                            {% for tipo in tipos_gestion %}
+                            <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Estatus de Gestión</label>
+                    <div class="col-md-9">
+                        <select class="form-control" name="estatus_gestion" id="estatus_gestion" required>
+                            {% for estatus in estatus_gestion %}
+                            <option value="{{ estatus.id }}" parent_id="{{ estatus.tipo_id }}">{{ estatus.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Comentario</label>
+                    <div class="col-md-9">
+                        <textarea class="form-control" name="comentario" cols="30" rows="3" placeholder="Comentario..."></textarea>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline-secondary" type="button" data-dismiss="modal" style="width: 100px;">

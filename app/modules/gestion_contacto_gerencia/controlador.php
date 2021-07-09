@@ -15,7 +15,13 @@ class controlador
     }
 
     public function index() {
-        return Response::view('views/index.html');
+        return Response::view('views/index.html', [
+            'tipos_llamadas'    => TipoLlamada::select('id', 'nombre')->get(),
+            'tipos_gestion'     => TipoGestion::select('id', 'nombre')->get(),
+            'estatus_gestion'   => EstatusGestion::select('id', 'tipo_id', 'nombre')->get(),
+            'resolucion_comite'   => ResolucionComite::select('id', 'nombre')->get(),
+            'membresia_president'   => MembresiaPresident::select('id', 'nombre')->get(),
+        ]);
     }
 
     public function api($accion = NULL) {
@@ -175,6 +181,7 @@ class controlador
                 /**
                  * Seccion 3
                  */
+                $gestiones = gestiones_datatable($cedula);
 
                 /**
                   * Respuesta
@@ -198,7 +205,75 @@ class controlador
                         'vinculacion_natural' => $vinculacion_natural,
                         'vinculacion_juridica' => $vinculacion_juridica,
                     ],
-                    'seccion_3' => [],
+                    'seccion_3' => $gestiones
+                ]);
+            break;
+
+            /**
+             * Registrar nueva gestion
+             */
+            case 'registrar_gestion':
+                // Tomamos parametros
+                $fecha_asignacion = Request::input('fecha_asignacion', $requerido = TRUE);
+                $cedula = Request::input('cedula', $requerido = TRUE);
+                $tipo_llamada_id = Request::input('tipo_llamada', $requerido = TRUE);
+                $tipo_gestion_id = Request::input('tipo_gestion', $requerido = TRUE);
+                $estatus_gestion_id = Request::input('estatus_gestion', $requerido = TRUE);
+                $comentario = Request::input('comentario', $requerido = TRUE);
+                $resolucion_comite_id = Request::input('resolucion_comite', $requerido = TRUE);
+                $fecha_comite = Request::input('fecha_comite', $requerido = TRUE);
+                $membresia_president_id = Request::input('membresia_president', $requerido = TRUE);
+                $fecha_pago = Request::input('fecha_pago', $requerido = TRUE);
+                
+                // Validamos parametros
+                $objPresident = President::where('ci', $cedula)->first();
+                if($objPresident == NULL) throw new Exception('Cedula no encontrada.');
+
+                $objTipo_llamada = TipoLlamada::find($tipo_llamada_id);
+                if($objTipo_llamada == NULL) throw new Exception('Tipo de llamada invalida.');
+
+                $objEstatus_gestion = EstatusGestion::find($estatus_gestion_id);
+                if($objEstatus_gestion == NULL) throw new Exception('Estatus de gestión invalido.');
+
+                $objResolucion_comite = EstatusGestion::find($resolucion_comite_id);
+                if($objResolucion_comite == NULL) throw new Exception('Resolucion de comite invalida.');
+
+                $objMembresia_president = EstatusGestion::find($membresia_president_id);
+                if($objMembresia_president == NULL) throw new Exception('Membresia President invalida.');
+
+                if( empty($fecha_asignacion) ) throw new Exception('La fecha de asignación no puede estar vacia.');
+                if( empty($fecha_comite) ) throw new Exception('La fecha de comite no puede estar vacia.');
+                if( empty($fecha_pago) ) throw new Exception('La fecha de pago no puede estar vacia.');
+
+                // Valores por defecto
+                $fecha_gestion = now('Y-m-d');
+                $objEjecutivo = Sesion::usuario();
+
+                // Registramos datos
+                DB::beginTransaction();
+
+                $objGestion = new Gestion;
+                $objGestion->fecha_asignacion           = $fecha_asignacion;
+                $objGestion->fecha_gestion              = $fecha_gestion;
+                $objGestion->ci                         = $objPresident->ci;
+                $objGestion->usuario_id                 = $objEjecutivo->id;
+                $objGestion->tipo_llamada_id            = $objTipo_llamada->id;
+                $objGestion->tipo_gestion_id            = $objEstatus_gestion->tipo_id;
+                $objGestion->estatus_gestion_id         = $objEstatus_gestion->id;
+                $objGestion->comentario                 = $comentario;
+                $objGestion->resolucion_comite_id       = $objResolucion_comite->id;
+                $objGestion->fecha_comite               = $fecha_comite;
+                $objGestion->membresia_president_id     = $objMembresia_president->id;
+                $objGestion->fecha_pago                 = $fecha_pago;
+                $objGestion->save();
+
+                DB::commit();
+
+                $gestiones = gestiones_datatable($objPresident->ci);
+
+                // Retornamos
+                return Response::json([
+                    'gestiones' => $gestiones
                 ]);
             break;
 
@@ -208,4 +283,28 @@ class controlador
             default: throw new Exception('Acción invalida.');
         }
     }
+}
+
+function gestiones_datatable($ci) {
+    $gestiones = Gestion::where('ci', $ci)->orderBy('created_at', 'DESC')->get();
+    foreach($gestiones as $key => $gestion) {
+        $usuario = Usuario::select('nombres', 'apellidos')->where('id', $gestion->usuario_id)->first();
+        if($usuario != NULL) $gestiones[$key]->ejecutivo = "{$usuario->nombres} {$usuario->apellidos}";
+        
+        $tipo_llamada = TipoLLamada::select('nombre')->where('id', $gestion->tipo_llamada_id)->first();
+        if($tipo_llamada != NULL) $gestiones[$key]->tipo_llamada = $tipo_llamada->nombre;
+        
+        $tipo_gestion = TipoGestion::select('nombre')->where('id', $gestion->tipo_gestion_id)->first();
+        if($tipo_gestion != NULL) $gestiones[$key]->tipo_gestion = $tipo_gestion->nombre;
+        
+        $estatus_gestion = EstatusGestion::select('nombre')->where('id', $gestion->estatus_gestion_id)->first();
+        if($estatus_gestion != NULL) $gestiones[$key]->estatus_gestion = $estatus_gestion->nombre;
+        
+        $resolucion_comite = ResolucionComite::select('nombre')->where('id', $gestion->resolucion_comite_id)->first();
+        if($resolucion_comite != NULL) $gestiones[$key]->resolucion_comite = $resolucion_comite->nombre;
+        
+        $membresia_president = MembresiaPresident::select('nombre')->where('id', $gestion->membresia_president_id)->first();
+        if($membresia_president != NULL) $gestiones[$key]->membresia_president = $membresia_president->nombre;
+    }
+    return $gestiones;
 }

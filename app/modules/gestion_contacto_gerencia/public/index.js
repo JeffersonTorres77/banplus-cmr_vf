@@ -1,3 +1,4 @@
+let cedula_actual = null;
 const VINCULACION_NATURAL = {
     mes_1:      $("#vinculacion-natural .mes_1"),
     mes_2:      $("#vinculacion-natural .mes_2"),
@@ -27,19 +28,20 @@ $("#form-search").on('submit', function(e) {
             Loader.show();
         },
         error(mensaje) {
+            cedula_actual = null;
             Alerta.error('Consultar datos', mensaje);
             // Boton nueva gestion
             $("#btn-nueva-gestion").removeAttr('cedula');
             // Limpiamos seccion 1
-            $("[data=cedula]").val('');
-            $("[data=celular]").val('');
-            $("[data=gerente_banca_persona]").val('');
-            $("[data=nombre]").val('');
-            $("[data=otro_telefono]").val('');
-            $("[data=gerente_juridico]").val('');
-            $("[data=segmento]").val('');
-            $("[data=correo]").val('');
-            $("[data=vpr_juridico]").val('');
+            $("[data=cedula]").attr('value', '');
+            $("[data=celular]").attr('value', '');
+            $("[data=gerente_banca_persona]").attr('value', '');
+            $("[data=nombre]").attr('value', '');
+            $("[data=otro_telefono]").attr('value', '');
+            $("[data=gerente_juridico]").attr('value', '');
+            $("[data=segmento]").attr('value', '');
+            $("[data=correo]").attr('value', '');
+            $("[data=vpr_juridico]").attr('value', '');
             // Limpiamos seccion 2
             VINCULACION_NATURAL.dolar.find('td:not(:first-child)').html('');
             VINCULACION_NATURAL.euro.find('td:not(:first-child)').html('');
@@ -50,6 +52,8 @@ $("#form-search").on('submit', function(e) {
             VINCULACION_JURIDICA.euro.find('td:not(:first-child)').html('');
             VINCULACION_JURIDICA.corriente.find('td:not(:first-child)').html('');
             VINCULACION_JURIDICA.ahorro.find('td:not(:first-child)').html('');
+            // Limpiamos seccion 3
+            actualizar_tabla_gestion([]);
         },
         ok(data) {
             // Principal
@@ -58,6 +62,7 @@ $("#form-search").on('submit', function(e) {
             let seccion_3 = data.seccion_3;
 
             // Boton nueva gestion
+            cedula_actual = seccion_1.cedula;
             $("#btn-nueva-gestion").attr('cedula', seccion_1.cedula);
 
             // Seccion 1
@@ -71,15 +76,15 @@ $("#form-search").on('submit', function(e) {
             if( seccion_1.correo == null )                   seccion_1.correo = valor_defecto;
             if( seccion_1.vpr_juridico == null )             seccion_1.vpr_juridico = valor_defecto;
             
-            $("[data=cedula]").val(seccion_1.cedula);
-            $("[data=celular]").val(seccion_1.celular);
-            $("[data=gerente_banca_persona]").val(seccion_1.gerente_banca_president);
-            $("[data=nombre]").val(seccion_1.nombre);
-            $("[data=otro_telefono]").val(seccion_1.otro_telefono);
-            $("[data=gerente_juridico]").val(seccion_1.gerente_juridico);
-            $("[data=segmento]").val(seccion_1.segmento);
-            $("[data=correo]").val(seccion_1.correo);
-            $("[data=vpr_juridico]").val(seccion_1.vpr_juridico);
+            $("[data=cedula]").attr('value', seccion_1.cedula);
+            $("[data=celular]").attr('value', seccion_1.celular);
+            $("[data=gerente_banca_persona]").attr('value', seccion_1.gerente_banca_president);
+            $("[data=nombre]").attr('value', seccion_1.nombre);
+            $("[data=otro_telefono]").attr('value', seccion_1.otro_telefono);
+            $("[data=gerente_juridico]").attr('value', seccion_1.gerente_juridico);
+            $("[data=segmento]").attr('value', seccion_1.segmento);
+            $("[data=correo]").attr('value', seccion_1.correo);
+            $("[data=vpr_juridico]").attr('value', seccion_1.vpr_juridico);
 
             // Seccion 2
             VINCULACION_NATURAL.mes_1.html( seccion_2.mes_1 );
@@ -130,9 +135,8 @@ $("#form-search").on('submit', function(e) {
             $( VINCULACION_JURIDICA.ahorro.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_juridica.ahorro.mes_3) );
             $( VINCULACION_JURIDICA.ahorro.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_juridica.ahorro.promedio) );
 
-            console.log( seccion_2 );
-
             // Seccion 3
+            actualizar_tabla_gestion(seccion_3);
         },
         final() {
             Loader.hide();
@@ -154,4 +158,137 @@ $("#btn-nueva-gestion").on('click', function() {
 
 $("#modal-registro-gestion form").on('submit', function(e) {
     e.preventDefault();
+
+    AJAX.enviar({
+        url: `${BASE_URL}/Gestion_Contacto_Gerencia/api/registrar_gestion/`,
+        data: {
+            cedula: cedula_actual,
+            ...Form.json( $("#modal-registro-gestion form") )
+        },
+        antes() {
+            Loader.show();
+        },
+        error(mensaje) {
+            Alerta.error('Registrar nueva gestión', mensaje);
+        },
+        ok(data) {
+            actualizar_tabla_gestion(data.gestiones);
+            $("#modal-registro-gestion").modal('hide');
+            Alerta.ok('Registrar nueva gestión', 'Gestión registrada exitosamente.');
+            $('#modal-registro-gestion form')[0].reset();
+            actualizar_select_estatus_gestion();
+        },
+        final() {
+            Loader.hide();
+        }
+    });
 });
+
+/**
+ * Selectores del modal
+ */
+ function actualizar_select_estatus_gestion() {
+    let tipo_gestion_id = $("#tipo_gestion").val();
+    let options = $("#estatus_gestion option");
+    let selected_id = null;
+    for(let option of options) {
+        if( $(option).attr('parent_id') == tipo_gestion_id ) {
+            $(option).removeAttr('disabled');
+            if(selected_id == null) selected_id = $(option).val();
+        }
+        else {
+            $(option).attr('disabled', '');
+        }
+    }
+    $("#estatus_gestion").val(selected_id)
+}
+
+actualizar_select_estatus_gestion();
+$("#tipo_gestion").on('change', function() {
+    actualizar_select_estatus_gestion();
+});
+
+/**
+ * Tabla de gestion
+ */
+ var vacio_defecto = '<span class="text-muted small">(No aplica)</span>';
+ var table_gestion = $("#tabla-gestion").DataTable({
+     language: DT_SPANISH,
+     order: [[ 1, "desc" ]],
+     data: [],
+     columns: [
+         {
+             data: 'fecha_asignacion',
+             class: 'text-center text-truncate',
+             render: function(d, type, row) {
+                 if(d == null) return vacio_defecto;
+                 let date = new Date(d);
+                 return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+             }
+         },
+         {
+             data: 'fecha_gestion',
+             class: 'text-center text-truncate',
+             render: function(d, type, row) {
+                 let date = new Date(d);
+                 return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+             }
+         },
+         {
+             data: 'ejecutivo',
+             class: 'text-truncate',
+         },
+         {
+             data: 'tipo_llamada',
+             class: 'text-center text-truncate',
+         },
+         {
+             data: 'tipo_gestion',
+             class: 'text-center text-truncate',
+         },
+         {
+             data: 'estatus_gestion',
+             class: 'text-center text-truncate',
+         },
+         {
+             data: 'comentario',
+         },
+         {
+             data: 'resolucion_comite',
+             render: function(d, type, row) {
+                 if(d == null) return vacio_defecto;
+                 else return d;
+             }
+         },
+         {
+             data: 'fecha_comite',
+             class: 'text-center text-truncate',
+             render: function(d, type, row) {
+                 if(d == null) return vacio_defecto;
+                 let date = new Date(d);
+                 return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+             }
+         },
+         {
+             data: 'membresia_president',
+             render: function(d, type, row) {
+                 if(d == null) return vacio_defecto;
+                 else return d;
+             }
+         },
+         {
+             data: 'fecha_pago',
+             class: 'text-center text-truncate',
+             render: function(d, type, row) {
+                 if(d == null) return vacio_defecto;
+                 let date = new Date(d);
+                 return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+             }
+         },
+     ],
+ });
+ function actualizar_tabla_gestion(data) {
+     table_gestion.clear();
+     table_gestion.rows.add(data);
+     table_gestion.draw();
+ }

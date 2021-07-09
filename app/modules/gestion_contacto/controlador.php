@@ -15,14 +15,11 @@ class controlador
     }
 
     public function index() {
-        return Response::view('views/index.html');
-    }
-
-    public function nueva($cedula = NULL) {
-        if($cedula == NULL) Response::error_404();
-        $objPresident = President::where('ci', $cedula)->first()->toArray();
-        if($objPresident == NULL) Response::error_404();
-        return Response::view('views/nueva.html', $objPresident);
+        return Response::view('views/index.html', [
+            'tipos_llamadas'    => TipoLlamada::select('id', 'nombre')->get(),
+            'tipos_gestion'     => TipoGestion::select('id', 'nombre')->get(),
+            'estatus_gestion'   => EstatusGestion::select('id', 'tipo_id', 'nombre')->get(),
+        ]);
     }
 
     public function api($accion = NULL) {
@@ -130,6 +127,11 @@ class controlador
                 // BI
                 $status_juridico_bi = 3;
 
+                /**
+                 * Seccion 3
+                 */
+                $gestiones = gestiones_datatable($cedula);
+
                  /**
                   * Respuesta
                   */
@@ -153,6 +155,60 @@ class controlador
                         'juridica-divisas'  => $status_juridico_divisas,
                         'juridica-bi'       => $status_juridico_bi,
                     ],
+                    'seccion_3' => $gestiones
+                ]);
+            break;
+
+            /**
+             * Registrar nueva gestion
+             */
+            case 'registrar_gestion':
+                // Tomamos parametros
+                $cedula = Request::input('cedula', $requerido = TRUE);
+                $tipo_llamada_id = Request::input('tipo_llamada', $requerido = TRUE);
+                $tipo_gestion_id = Request::input('tipo_gestion', $requerido = TRUE);
+                $estatus_gestion_id = Request::input('estatus_gestion', $requerido = TRUE);
+                $comentario = Request::input('comentario', $requerido = TRUE);
+                
+                // Validamos parametros
+                $objPresident = President::where('ci', $cedula)->first();
+                if($objPresident == NULL) throw new Exception('Cedula no encontrada.');
+
+                $objTipo_llamada = TipoLlamada::find($tipo_llamada_id);
+                if($objTipo_llamada == NULL) throw new Exception('Tipo de llamada invalida.');
+
+                $objEstatus_gestion = EstatusGestion::find($estatus_gestion_id);
+                if($objEstatus_gestion == NULL) throw new Exception('Estatus de gestión invalido.');
+
+                // Valores por defecto
+                $fecha_gestion = now('Y-m-d');
+                $objEjecutivo = Sesion::usuario();
+
+                // Registramos datos
+                DB::beginTransaction();
+
+                $objGestion = new Gestion;
+                $objGestion->fecha_asignacion           = NULL;
+                $objGestion->fecha_gestion              = $fecha_gestion;
+                $objGestion->ci                         = $objPresident->ci;
+                $objGestion->usuario_id                 = $objEjecutivo->id;
+                $objGestion->tipo_llamada_id            = $objTipo_llamada->id;
+                $objGestion->tipo_gestion_id            = $objEstatus_gestion->tipo_id;
+                $objGestion->estatus_gestion_id         = $objEstatus_gestion->id;
+                $objGestion->comentario                 = $comentario;
+                $objGestion->resolucion_comite_id       = NULL;
+                $objGestion->fecha_comite               = NULL;
+                $objGestion->membresia_president_id     = NULL;
+                $objGestion->fecha_pago                 = NULL;
+                $objGestion->save();
+
+                DB::commit();
+
+                $gestiones = gestiones_datatable($objPresident->ci);
+
+                // Retornamos
+                return Response::json([
+                    'gestiones' => $gestiones
                 ]);
             break;
 
@@ -162,4 +218,28 @@ class controlador
             default: throw new Exception('Acción invalida.');
         }
     }
+}
+
+function gestiones_datatable($ci) {
+    $gestiones = Gestion::where('ci', $ci)->orderBy('created_at', 'DESC')->get();
+    foreach($gestiones as $key => $gestion) {
+        $usuario = Usuario::select('nombres', 'apellidos')->where('id', $gestion->usuario_id)->first();
+        if($usuario != NULL) $gestiones[$key]->ejecutivo = "{$usuario->nombres} {$usuario->apellidos}";
+        
+        $tipo_llamada = TipoLLamada::select('nombre')->where('id', $gestion->tipo_llamada_id)->first();
+        if($tipo_llamada != NULL) $gestiones[$key]->tipo_llamada = $tipo_llamada->nombre;
+        
+        $tipo_gestion = TipoGestion::select('nombre')->where('id', $gestion->tipo_gestion_id)->first();
+        if($tipo_gestion != NULL) $gestiones[$key]->tipo_gestion = $tipo_gestion->nombre;
+        
+        $estatus_gestion = EstatusGestion::select('nombre')->where('id', $gestion->estatus_gestion_id)->first();
+        if($estatus_gestion != NULL) $gestiones[$key]->estatus_gestion = $estatus_gestion->nombre;
+        
+        $resolucion_comite = ResolucionComite::select('nombre')->where('id', $gestion->resolucion_comite_id)->first();
+        if($resolucion_comite != NULL) $gestiones[$key]->resolucion_comite = $resolucion_comite->nombre;
+        
+        $membresia_president = MembresiaPresident::select('nombre')->where('id', $gestion->membresia_president_id)->first();
+        if($membresia_president != NULL) $gestiones[$key]->membresia_president = $membresia_president->nombre;
+    }
+    return $gestiones;
 }

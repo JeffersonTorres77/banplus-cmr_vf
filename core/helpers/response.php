@@ -82,7 +82,8 @@ class Response
             'PERMISOS' => $permisos,
             'CONTROLADOR' => Request::getControlador(),
             'METODO' => Request::getMetodo(),
-            'SIDEBAR_COLLAPSE' => boolval( $_COOKIE['sidebar_collapse'] )
+            'SIDEBAR_COLLAPSE' => boolval( $_COOKIE['sidebar_collapse'] ),
+            'NOW' => now('Y-m-d'),
         ];
     }
 
