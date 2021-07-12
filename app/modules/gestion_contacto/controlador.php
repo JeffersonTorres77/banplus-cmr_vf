@@ -213,6 +213,32 @@ class controlador
             break;
 
             /**
+             * Modificar Comentario
+             */
+            case 'modificar-comentario':
+                $id = Request::input('id', $requerido = TRUE);
+                $comentario = Request::input('comentario', $requerido = TRUE);
+
+                $objGestion = Gestion::find($id);
+                if($objGestion == NULL) throw new Exception('Gestión invalida.');
+                if($objGestion->usuario_id != Sesion::usuario()->id) throw new Exception('No tiene permisos de modificar este comentario.');
+
+                if( empty($comentario) ) throw new Exception('El comentario no puede estar vacio.');
+                
+                DB::beginTransaction();
+                $objGestion->comentario = $comentario;
+                $objGestion->save();
+                DB::commit();
+
+                $gestiones = gestiones_datatable($objGestion->ci);
+
+                // Retornamos
+                return Response::json([
+                    'gestiones' => $gestiones
+                ]);
+            break;
+
+            /**
              * Ninguna de las anteriores
              */
             default: throw new Exception('Acción invalida.');

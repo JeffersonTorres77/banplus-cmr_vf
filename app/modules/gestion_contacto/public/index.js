@@ -205,9 +205,6 @@ var table_gestion = $("#tabla-gestion").DataTable({
             class: 'text-center text-truncate',
         },
         {
-            data: 'comentario',
-        },
-        {
             data: 'resolucion_comite',
             render: function(d, type, row) {
                 if(d == null) return vacio_defecto;
@@ -239,6 +236,20 @@ var table_gestion = $("#tabla-gestion").DataTable({
                 return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
             }
         },
+        {
+            data: 'comentario',
+            class: 'text-truncate',
+            render: function(d, type, row) {
+                let limite = 50;
+                if(d.length > limite) d = d.substr(0, limite - 3) + "...";
+                return `<div class="d-flex justify-content-between">
+                    <span>${d}</span>
+                    <button class="btn btn-sm btn-outline-primary ml-2 comentario" style="padding: 0rem .40em;">
+                        <i class="fas fa-eye fa-xs"></i>
+                    </button>
+                </div>`;
+            }
+        },
     ],
 });
 function actualizar_tabla_gestion(data) {
@@ -246,3 +257,48 @@ function actualizar_tabla_gestion(data) {
     table_gestion.rows.add(data);
     table_gestion.draw();
 }
+
+/**
+ * Mostrar comentario
+ */
+ $("#tabla-gestion").on('click', '.comentario', function() {
+    let data = table_gestion.row( $(this).parents('tr') ).data();
+
+    $("#modal-comentario form [name=id]").val( data.id );
+    $("#modal-comentario form [name=fecha_gestion]").val( data.fecha_gestion );
+    $("#modal-comentario form [name=comentario]").val( data.comentario );
+
+    if(data.usuario_id == USUARIO_ID) {
+        $("#modal-comentario form [name=comentario]").removeAttr('disabled');
+        $("#modal-comentario form [type=submit]").removeAttr('disabled').removeClass('d-none');
+    }
+    else {
+        $("#modal-comentario form [name=comentario]").attr('disabled', '');
+        $("#modal-comentario form [type=submit]").attr('disabled', '').addClass('d-none');
+    }
+
+    $("#modal-comentario").modal('show');
+});
+
+$("#modal-comentario form").on('submit', function(e) {
+    e.preventDefault();
+
+    AJAX.enviar({
+        url: `${BASE_URL}/Gestion_Contacto/API/modificar-comentario`,
+        data: Form.json( $("#modal-comentario form") ),
+        antes() {
+            Loader.show();
+        },
+        error(mensaje) {
+            Alerta.error('Modificar comentario', mensaje);
+        },
+        ok(data) {
+            actualizar_tabla_gestion(data.gestiones);
+            $("#modal-comentario").modal('hide');
+            Alerta.ok('Modificar comentario', 'Comentario modificado exitosamente.');
+        },
+        final() {
+            Loader.hide();
+        }
+    });
+});

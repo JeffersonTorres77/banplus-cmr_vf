@@ -9,6 +9,9 @@
 {% endblock %}
 
 {% block js %}
+<script>
+    const USUARIO_ID = `{{ USUARIO.id }}`;
+</script>
 <script src="{{ public_file('index.js') }}"></script>
 {% endblock %}
 
@@ -16,7 +19,7 @@
 <div class="p-3">
     <div class="card card-primary card-outline">
         <div class="card-header">
-            <div class="card-title">Gestión de Contacto – Banca Persona</div>
+            <div class="card-title">Gestión de Contacto – Banca President</div>
         </div>
         <div class="card-body">
             <div class="row">
@@ -103,8 +106,12 @@
                     </div>
                 </div>
 
+                <div class="col-12 d-none">
+                    <hr>
+                </div>
+
                 <!-- FILA 4 -->
-                <div class="col-6">
+                <div class="col-6 d-none">
                     <div class="form-group">
                         <label class="mb-1 text-primary">Vinculación Natural</label>
                         <div class="table-responsive">
@@ -119,33 +126,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="dolar">
-                                        <td>Cust. $</td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                    </tr>
-                                    <tr class="euro">
-                                        <td>Cust. Є</td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                    </tr>
-                                    <tr class="corriente">
-                                        <td>Cta. Cte</td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                    </tr>
-                                    <tr class="ahorro">
-                                        <td>Cta. Ahorro</td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
+                                    <tr>
+                                        <td colspan="100">
+                                            <h5 class="text-center mb-0 p-3">. . .</h5>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -153,7 +137,7 @@
                     </div>
                 </div>
 
-                <div class="col-6">
+                <div class="col-6 d-none">
                     <div class="form-group">
                         <label class="mb-1 text-primary">Vinculación Jurídica</label>
                         <div class="table-responsive">
@@ -168,38 +152,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="dolar">
-                                        <td>Cust. $</td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                    </tr>
-                                    <tr class="euro">
-                                        <td>Cust. Є</td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                    </tr>
-                                    <tr class="corriente">
-                                        <td>Cta. Cte</td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                    </tr>
-                                    <tr class="ahorro">
-                                        <td>Cta. Ahorro</td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
-                                        <td class="text-right"></td>
+                                    <tr>
+                                        <td colspan="100">
+                                            <h5 class="text-center mb-0 p-3">. . .</h5>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                </div>
+
+                <div class="col-12">
+                    <hr>
                 </div>
 
                 <!-- FILA 5 -->
@@ -215,11 +180,11 @@
                                     <th class="text-truncate">Tipo Llamada</th>
                                     <th class="text-truncate">Tipo Gestión</th>
                                     <th class="text-truncate">Estatus Gestión</th>
-                                    <th class="text-truncate">Comentario</th>
                                     <th class="text-truncate">Resolucion Comite</th>
                                     <th class="text-truncate">Fecha Comite</th>
                                     <th class="text-truncate">Membresia President</th>
                                     <th class="text-truncate">Fecha de pago</th>
+                                    <th class="text-truncate">Comentario</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -435,6 +400,37 @@
                 </button>
                 <button class="btn btn-primary" type="submit" style="width: 100px;">
                     Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL VER COMENTARIO -->
+<div class="modal fade" id="modal-comentario">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="mb-0">Comentario</h5>
+                <button class="close" data-dismiss="modal" type="button">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="id">
+                <div class="form-group">
+                    <label class="mb-1">Fecha de gestión</label>
+                    <input type="date" name="fecha_gestion" disabled class="form-control">
+                </div>
+                <div class="form-group mb-0">
+                    <label class="mb-1">Comentario</label>
+                    <textarea class="form-control bg-white text-dark" name="comentario" cols="30" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" type="button" data-dismiss="modal" style="width: 100px;">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary" type="submit" style="width: 100px;">
+                    Modificar
                 </button>
             </div>
         </form>

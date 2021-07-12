@@ -3,19 +3,13 @@ const VINCULACION_NATURAL = {
     mes_1:      $("#vinculacion-natural .mes_1"),
     mes_2:      $("#vinculacion-natural .mes_2"),
     mes_3:      $("#vinculacion-natural .mes_3"),
-    dolar:      $("#vinculacion-natural .dolar"),
-    euro:       $("#vinculacion-natural .euro"),
-    corriente:  $("#vinculacion-natural .corriente"),
-    ahorro:     $("#vinculacion-natural .ahorro"),
+    tbody:      $("#vinculacion-natural tbody"),
 };
 const VINCULACION_JURIDICA = {
     mes_1:      $("#vinculacion-juridica .mes_1"),
     mes_2:      $("#vinculacion-juridica .mes_2"),
     mes_3:      $("#vinculacion-juridica .mes_3"),
-    dolar:      $("#vinculacion-juridica .dolar"),
-    euro:       $("#vinculacion-juridica .euro"),
-    corriente:  $("#vinculacion-juridica .corriente"),
-    ahorro:     $("#vinculacion-juridica .ahorro"),
+    tbody:      $("#vinculacion-juridica tbody"),
 };
 
 $("#form-search").on('submit', function(e) {
@@ -91,50 +85,32 @@ $("#form-search").on('submit', function(e) {
             VINCULACION_NATURAL.mes_2.html( seccion_2.mes_2 );
             VINCULACION_NATURAL.mes_3.html( seccion_2.mes_3 );
 
-            $( VINCULACION_NATURAL.dolar.find('td')[1] ).html( formatNumber(seccion_2.vinculacion_natural.dolar.mes_1) );
-            $( VINCULACION_NATURAL.dolar.find('td')[2] ).html( formatNumber(seccion_2.vinculacion_natural.dolar.mes_2) );
-            $( VINCULACION_NATURAL.dolar.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_natural.dolar.mes_3) );
-            $( VINCULACION_NATURAL.dolar.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_natural.dolar.promedio) );
-
-            $( VINCULACION_NATURAL.euro.find('td')[1] ).html( formatNumber(seccion_2.vinculacion_natural.euro.mes_1) );
-            $( VINCULACION_NATURAL.euro.find('td')[2] ).html( formatNumber(seccion_2.vinculacion_natural.euro.mes_2) );
-            $( VINCULACION_NATURAL.euro.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_natural.euro.mes_3) );
-            $( VINCULACION_NATURAL.euro.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_natural.euro.promedio) );
-
-            $( VINCULACION_NATURAL.corriente.find('td')[1] ).html( formatNumber(seccion_2.vinculacion_natural.corriente.mes_1) );
-            $( VINCULACION_NATURAL.corriente.find('td')[2] ).html( formatNumber(seccion_2.vinculacion_natural.corriente.mes_2) );
-            $( VINCULACION_NATURAL.corriente.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_natural.corriente.mes_3) );
-            $( VINCULACION_NATURAL.corriente.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_natural.corriente.promedio) );
-
-            $( VINCULACION_NATURAL.ahorro.find('td')[1] ).html( formatNumber(seccion_2.vinculacion_natural.ahorro.mes_1) );
-            $( VINCULACION_NATURAL.ahorro.find('td')[2] ).html( formatNumber(seccion_2.vinculacion_natural.ahorro.mes_2) );
-            $( VINCULACION_NATURAL.ahorro.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_natural.ahorro.mes_3) );
-            $( VINCULACION_NATURAL.ahorro.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_natural.ahorro.promedio) );
-
+            VINCULACION_NATURAL.tbody.html('');
+            for(let vinculacion of seccion_2.vinculacion_natural) {
+                VINCULACION_NATURAL.tbody.append(`<tr>
+                    <td>${ vinculacion.label }</td>
+                    <td>${ vinculacion.promedio }</td>
+                    <td>${ vinculacion.mes_1 }</td>
+                    <td>${ vinculacion.mes_2 }</td>
+                    <td>${ vinculacion.mes_3 }</td>
+                </tr>`);
+            }
+            
             VINCULACION_JURIDICA.mes_1.html( seccion_2.mes_1 );
             VINCULACION_JURIDICA.mes_2.html( seccion_2.mes_2 );
             VINCULACION_JURIDICA.mes_3.html( seccion_2.mes_3 );
 
-            $( VINCULACION_JURIDICA.dolar.find('td')[1] ).html( formatNumber(seccion_2.vinculacion_juridica.dolar.mes_1) );
-            $( VINCULACION_JURIDICA.dolar.find('td')[2] ).html( formatNumber(seccion_2.vinculacion_juridica.dolar.mes_2) );
-            $( VINCULACION_JURIDICA.dolar.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_juridica.dolar.mes_3) );
-            $( VINCULACION_JURIDICA.dolar.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_juridica.dolar.promedio) );
-
-            $( VINCULACION_JURIDICA.euro.find('td')[1] ).html( formatNumber(seccion_2.vinculacion_juridica.euro.mes_1) );
-            $( VINCULACION_JURIDICA.euro.find('td')[2] ).html( formatNumber(seccion_2.vinculacion_juridica.euro.mes_2) );
-            $( VINCULACION_JURIDICA.euro.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_juridica.euro.mes_3) );
-            $( VINCULACION_JURIDICA.euro.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_juridica.euro.promedio) );
-
-            $( VINCULACION_JURIDICA.corriente.find('td')[1] ).html( formatNumber(seccion_2.vinculacion_juridica.corriente.mes_1) );
-            $( VINCULACION_JURIDICA.corriente.find('td')[2] ).html( formatNumber(seccion_2.vinculacion_juridica.corriente.mes_2) );
-            $( VINCULACION_JURIDICA.corriente.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_juridica.corriente.mes_3) );
-            $( VINCULACION_JURIDICA.corriente.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_juridica.corriente.promedio) );
+            VINCULACION_JURIDICA.tbody.html('');
+            for(let vinculacion of seccion_2.vinculacion_juridica) {
+                VINCULACION_JURIDICA.tbody.append(`<tr>
+                    <td>${ vinculacion.label }</td>
+                    <td>${ vinculacion.promedio }</td>
+                    <td>${ vinculacion.mes_1 }</td>
+                    <td>${ vinculacion.mes_2 }</td>
+                    <td>${ vinculacion.mes_3 }</td>
+                </tr>`);
+            }
             
-            $( VINCULACION_JURIDICA.ahorro.find('td')[1] ).html( formatNumber(seccion_2.vinculacion_juridica.ahorro.mes_1) );
-            $( VINCULACION_JURIDICA.ahorro.find('td')[2] ).html( formatNumber(seccion_2.vinculacion_juridica.ahorro.mes_2) );
-            $( VINCULACION_JURIDICA.ahorro.find('td')[3] ).html( formatNumber(seccion_2.vinculacion_juridica.ahorro.mes_3) );
-            $( VINCULACION_JURIDICA.ahorro.find('td')[4] ).html( formatNumber(seccion_2.vinculacion_juridica.ahorro.promedio) );
-
             // Seccion 3
             actualizar_tabla_gestion(seccion_3);
         },
@@ -251,9 +227,6 @@ $("#tipo_gestion").on('change', function() {
              class: 'text-center text-truncate',
          },
          {
-             data: 'comentario',
-         },
-         {
              data: 'resolucion_comite',
              render: function(d, type, row) {
                  if(d == null) return vacio_defecto;
@@ -285,6 +258,20 @@ $("#tipo_gestion").on('change', function() {
                  return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
              }
          },
+         {
+            data: 'comentario',
+            class: 'text-truncate',
+            render: function(d, type, row) {
+                let limite = 50;
+                if(d.length > limite) d = d.substr(0, limite - 3) + "...";
+                return `<div class="d-flex justify-content-between">
+                    <span>${d}</span>
+                    <button class="btn btn-sm btn-outline-primary ml-2 comentario" style="padding: 0rem .40em;">
+                        <i class="fas fa-eye fa-xs"></i>
+                    </button>
+                </div>`;
+            }
+         },
      ],
  });
  function actualizar_tabla_gestion(data) {
@@ -292,3 +279,48 @@ $("#tipo_gestion").on('change', function() {
      table_gestion.rows.add(data);
      table_gestion.draw();
  }
+
+ /**
+  * Mostrar comentario
+  */
+  $("#tabla-gestion").on('click', '.comentario', function() {
+     let data = table_gestion.row( $(this).parents('tr') ).data();
+ 
+     $("#modal-comentario form [name=id]").val( data.id );
+     $("#modal-comentario form [name=fecha_gestion]").val( data.fecha_gestion );
+     $("#modal-comentario form [name=comentario]").val( data.comentario );
+ 
+     if(data.usuario_id == USUARIO_ID) {
+         $("#modal-comentario form [name=comentario]").removeAttr('disabled');
+         $("#modal-comentario form [type=submit]").removeAttr('disabled').removeClass('d-none');
+     }
+     else {
+         $("#modal-comentario form [name=comentario]").attr('disabled', '');
+         $("#modal-comentario form [type=submit]").attr('disabled', '').addClass('d-none');
+     }
+ 
+     $("#modal-comentario").modal('show');
+ });
+ 
+ $("#modal-comentario form").on('submit', function(e) {
+     e.preventDefault();
+ 
+     AJAX.enviar({
+         url: `${BASE_URL}/Gestion_Contacto_Gerencia/API/modificar-comentario`,
+         data: Form.json( $("#modal-comentario form") ),
+         antes() {
+             Loader.show();
+         },
+         error(mensaje) {
+             Alerta.error('Modificar comentario', mensaje);
+         },
+         ok(data) {
+             actualizar_tabla_gestion(data.gestiones);
+             $("#modal-comentario").modal('hide');
+             Alerta.ok('Modificar comentario', 'Comentario modificado exitosamente.');
+         },
+         final() {
+             Loader.hide();
+         }
+     });
+ });

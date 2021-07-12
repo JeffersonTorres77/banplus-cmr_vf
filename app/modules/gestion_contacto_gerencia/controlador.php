@@ -72,13 +72,9 @@ class controlador
                 $mes_1 = nombre_mes( now('m') - 1 )['nombre_corto'];
                 $mes_2 = nombre_mes( now('m') - 2 )['nombre_corto'];
                 $mes_3 = nombre_mes( now('m') - 3 )['nombre_corto'];
-                $vinculacion_natural = [
-                    'dolar'     => [ 'promedio' => NULL, 'mes_1' => NULL, 'mes_2' => NULL, 'mes_3' => NULL ],
-                    'euro'      => [ 'promedio' => NULL, 'mes_1' => NULL, 'mes_2' => NULL, 'mes_3' => NULL ],
-                    'corriente' => [ 'promedio' => NULL, 'mes_1' => NULL, 'mes_2' => NULL, 'mes_3' => NULL ],
-                    'ahorro'    => [ 'promedio' => NULL, 'mes_1' => NULL, 'mes_2' => NULL, 'mes_3' => NULL ],
-                ];
-                $vinculacion_juridica = $vinculacion_natural;
+                // label, mes_1, mes_2, mes_3, promedio
+                $vinculacion_natural = [];
+                $vinculacion_juridica = [];
 
                 // Natural
                 $cuenta_natural_corriente = FinancieroNatural::where('CI', $cedula)->whereIn('Moneda', ['Bolívar', 'Bolívares'])->where('Producto', 'Corriente')->orderBy('Promedio_Mes_1', 'DESC')->first();
@@ -87,10 +83,14 @@ class controlador
                     $m2 = bcdiv($cuenta_natural_corriente->Promedio_Mes_2, '1', 2);
                     $m3 = bcdiv($cuenta_natural_corriente->Promedio_Mes_3, '1', 2);
                     $p = bcdiv(($m1 + $m2 + $m3) / 3, '1', 2);
-                    $vinculacion_natural['corriente']['mes_1']       = $m1;
-                    $vinculacion_natural['corriente']['mes_2']       = $m2;
-                    $vinculacion_natural['corriente']['mes_3']       = $m3;
-                    $vinculacion_natural['corriente']['promedio']    = $p;
+                    array_push($vinculacion_natural, [
+                        'key'       => 'corriente',
+                        'label'     => 'Cta. Cte',
+                        'mes_1'     => $m1,
+                        'mes_2'     => $m2,
+                        'mes_3'     => $m3,
+                        'promedio'  => $p,
+                    ]);
                 }
 
                 $cuenta_natural_ahorro = FinancieroNatural::where('CI', $cedula)->whereIn('Moneda', ['Bolívar', 'Bolívares'])->where('Producto', 'Ahorro')->orderBy('Promedio_Mes_1', 'DESC')->first();
@@ -99,10 +99,14 @@ class controlador
                     $m2 = bcdiv($cuenta_natural_ahorro->Promedio_Mes_2, '1', 2);
                     $m3 = bcdiv($cuenta_natural_ahorro->Promedio_Mes_3, '1', 2);
                     $p = bcdiv(($m1 + $m2 + $m3) / 3, '1', 2);
-                    $vinculacion_natural['ahorro']['mes_1']       = $m1;
-                    $vinculacion_natural['ahorro']['mes_2']       = $m2;
-                    $vinculacion_natural['ahorro']['mes_3']       = $m3;
-                    $vinculacion_natural['ahorro']['promedio']    = $p;
+                    array_push($vinculacion_natural, [
+                        'key'       => 'ahorro',
+                        'label'     => 'Cta. Ahorro',
+                        'mes_1'     => $m1,
+                        'mes_2'     => $m2,
+                        'mes_3'     => $m3,
+                        'promedio'  => $p,
+                    ]);
                 }
 
                 $cuenta_natural_dolares = FinancieroNatural::where('CI', $cedula)->whereIn('Moneda', ['Dólar', 'Dólares'])->where('Producto', 'Custodia Dólares')->orderBy('Promedio_Mes_1', 'DESC')->first();
@@ -111,10 +115,14 @@ class controlador
                     $m2 = bcdiv($cuenta_natural_dolares->Promedio_Mes_2, '1', 2);
                     $m3 = bcdiv($cuenta_natural_dolares->Promedio_Mes_3, '1', 2);
                     $p = bcdiv(($m1 + $m2 + $m3) / 3, '1', 2);
-                    $vinculacion_natural['dolar']['mes_1']       = $m1;
-                    $vinculacion_natural['dolar']['mes_2']       = $m2;
-                    $vinculacion_natural['dolar']['mes_3']       = $m3;
-                    $vinculacion_natural['dolar']['promedio']    = $p;
+                    array_push($vinculacion_natural, [
+                        'key'       => 'dolar',
+                        'label'     => 'Cust. $',
+                        'mes_1'     => $m1,
+                        'mes_2'     => $m2,
+                        'mes_3'     => $m3,
+                        'promedio'  => $p,
+                    ]);
                 }
 
                 $cuenta_natural_euros = FinancieroNatural::where('CI', $cedula)->whereIn('Moneda', ['Euro', 'Euros'])->where('Producto', 'Custodia Euros')->orderBy('Promedio_Mes_1', 'DESC')->first();
@@ -123,10 +131,14 @@ class controlador
                     $m2 = bcdiv($cuenta_natural_euros->Promedio_Mes_2, '1', 2);
                     $m3 = bcdiv($cuenta_natural_euros->Promedio_Mes_3, '1', 2);
                     $p = bcdiv(($m1 + $m2 + $m3) / 3, '1', 2);
-                    $vinculacion_natural['euro']['mes_1']       = $m1;
-                    $vinculacion_natural['euro']['mes_2']       = $m2;
-                    $vinculacion_natural['euro']['mes_3']       = $m3;
-                    $vinculacion_natural['euro']['promedio']    = $p;
+                    array_push($vinculacion_natural, [
+                        'key'       => 'euro',
+                        'label'     => 'Cust. Є',
+                        'mes_1'     => $m1,
+                        'mes_2'     => $m2,
+                        'mes_3'     => $m3,
+                        'promedio'  => $p,
+                    ]);
                 }
 
                 // Juridica
@@ -136,10 +148,14 @@ class controlador
                     $m2 = bcdiv($cuenta_juridica_corriente->Promedio_Mes_2, '1', 2);
                     $m3 = bcdiv($cuenta_juridica_corriente->Promedio_Mes_3, '1', 2);
                     $p = bcdiv(($m1 + $m2 + $m3) / 3, '1', 2);
-                    $vinculacion_juridica['corriente']['mes_1']       = $m1;
-                    $vinculacion_juridica['corriente']['mes_2']       = $m2;
-                    $vinculacion_juridica['corriente']['mes_3']       = $m3;
-                    $vinculacion_juridica['corriente']['promedio']    = $p;
+                    array_push($vinculacion_juridica, [
+                        'key'       => 'corriente',
+                        'label'     => 'Cta. Cte',
+                        'mes_1'     => $m1,
+                        'mes_2'     => $m2,
+                        'mes_3'     => $m3,
+                        'promedio'  => $p,
+                    ]);
                 }
 
                 $cuenta_juridica_ahorro = FinancieroJuridico::where('CI', $cedula)->whereIn('Moneda', ['Bolívar', 'Bolívares'])->where('Producto', 'Ahorro')->orderBy('Promedio_Mes_1', 'DESC')->first();
@@ -148,10 +164,14 @@ class controlador
                     $m2 = bcdiv($cuenta_juridica_ahorro->Promedio_Mes_2, '1', 2);
                     $m3 = bcdiv($cuenta_juridica_ahorro->Promedio_Mes_3, '1', 2);
                     $p = bcdiv(($m1 + $m2 + $m3) / 3, '1', 2);
-                    $vinculacion_juridica['ahorro']['mes_1']       = $m1;
-                    $vinculacion_juridica['ahorro']['mes_2']       = $m2;
-                    $vinculacion_juridica['ahorro']['mes_3']       = $m3;
-                    $vinculacion_juridica['ahorro']['promedio']    = $p;
+                    array_push($vinculacion_juridica, [
+                        'key'       => 'ahorro',
+                        'label'     => 'Cta. Ahorro',
+                        'mes_1'     => $m1,
+                        'mes_2'     => $m2,
+                        'mes_3'     => $m3,
+                        'promedio'  => $p,
+                    ]);
                 }
 
                 $cuenta_juridica_dolares = FinancieroJuridico::where('CI', $cedula)->whereIn('Moneda', ['Dólar', 'Dólares'])->where('Producto', 'Custodia Dólares')->orderBy('Promedio_Mes_1', 'DESC')->first();
@@ -160,10 +180,14 @@ class controlador
                     $m2 = bcdiv($cuenta_juridica_dolares->Promedio_Mes_2, '1', 2);
                     $m3 = bcdiv($cuenta_juridica_dolares->Promedio_Mes_3, '1', 2);
                     $p = bcdiv(($m1 + $m2 + $m3) / 3, '1', 2);
-                    $vinculacion_juridica['dolar']['mes_1']       = $m1;
-                    $vinculacion_juridica['dolar']['mes_2']       = $m2;
-                    $vinculacion_juridica['dolar']['mes_3']       = $m3;
-                    $vinculacion_juridica['dolar']['promedio']    = $p;
+                    array_push($vinculacion_juridica, [
+                        'key'       => 'dolar',
+                        'label'     => 'Cust. $',
+                        'mes_1'     => $m1,
+                        'mes_2'     => $m2,
+                        'mes_3'     => $m3,
+                        'promedio'  => $p,
+                    ]);
                 }
 
                 $cuenta_juridica_euros = FinancieroJuridico::where('CI', $cedula)->whereIn('Moneda', ['Euro', 'Euros'])->where('Producto', 'Custodia Euros')->orderBy('Promedio_Mes_1', 'DESC')->first();
@@ -172,10 +196,14 @@ class controlador
                     $m2 = bcdiv($cuenta_juridica_euros->Promedio_Mes_2, '1', 2);
                     $m3 = bcdiv($cuenta_juridica_euros->Promedio_Mes_3, '1', 2);
                     $p = bcdiv(($m1 + $m2 + $m3) / 3, '1', 2);
-                    $vinculacion_juridica['euro']['mes_1']       = $m1;
-                    $vinculacion_juridica['euro']['mes_2']       = $m2;
-                    $vinculacion_juridica['euro']['mes_3']       = $m3;
-                    $vinculacion_juridica['euro']['promedio']    = $p;
+                    array_push($vinculacion_juridica, [
+                        'key'       => 'euro',
+                        'label'     => 'Cust. Є',
+                        'mes_1'     => $m1,
+                        'mes_2'     => $m2,
+                        'mes_3'     => $m3,
+                        'promedio'  => $p,
+                    ]);
                 }
 
                 /**
@@ -270,6 +298,32 @@ class controlador
                 DB::commit();
 
                 $gestiones = gestiones_datatable($objPresident->ci);
+
+                // Retornamos
+                return Response::json([
+                    'gestiones' => $gestiones
+                ]);
+            break;
+
+            /**
+             * Modificar Comentario
+             */
+            case 'modificar-comentario':
+                $id = Request::input('id', $requerido = TRUE);
+                $comentario = Request::input('comentario', $requerido = TRUE);
+
+                $objGestion = Gestion::find($id);
+                if($objGestion == NULL) throw new Exception('Gestión invalida.');
+                if($objGestion->usuario_id != Sesion::usuario()->id) throw new Exception('No tiene permisos de modificar este comentario.');
+
+                if( empty($comentario) ) throw new Exception('El comentario no puede estar vacio.');
+                
+                DB::beginTransaction();
+                $objGestion->comentario = $comentario;
+                $objGestion->save();
+                DB::commit();
+
+                $gestiones = gestiones_datatable($objGestion->ci);
 
                 // Retornamos
                 return Response::json([
