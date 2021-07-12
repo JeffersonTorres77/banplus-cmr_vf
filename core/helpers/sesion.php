@@ -4,6 +4,7 @@ class Sesion
 {
     private static $key;
     private static $usuario;
+    private static $tiempo_sesion = (60*10);
 
     public static function iniciar() {
         self::$key = config('SESSION.KEY');
@@ -14,16 +15,19 @@ class Sesion
         $_SESSION[self::$key."_usuario"] = $usuario;
         $_SESSION[self::$key."_ip"] = IP_CLIENTE;
         $_SESSION[self::$key."_date_start"] = strtotime( now() );
+        $_SESSION[self::$key."_date_end"] = strtotime( now() ) + self::$tiempo_sesion;
     }
     
     public static function validar() {
         if(!isset($_SESSION[self::$key."_usuario"])) return FALSE;
         if(!isset($_SESSION[self::$key."_ip"])) return FALSE;
         if(!isset($_SESSION[self::$key."_date_start"])) return FALSE;
+        if(!isset($_SESSION[self::$key."_date_end"])) return FALSE;
 
         $usuario = $_SESSION[self::$key."_usuario"];
         $ip = $_SESSION[self::$key."_ip"];
         $date_start = $_SESSION[self::$key."_date_start"];
+        $date_end = $_SESSION[self::$key."_date_end"];
 
         // Usuario
         self::$usuario = Usuario::where('usuario', $usuario)->first();
@@ -32,6 +36,13 @@ class Sesion
             return FALSE;
         }
 
+        if(strtotime( now() ) > $date_end) {
+            self::cerrar();
+            return FALSE;
+        }
+
+        $_SESSION[self::$key."_date_end"] = strtotime( now() ) + self::$tiempo_sesion;
+
         return TRUE;
     }
     
@@ -39,6 +50,7 @@ class Sesion
         unset( $_SESSION[self::$key."_usuario"] );
         unset( $_SESSION[self::$key."_ip"] );
         unset( $_SESSION[self::$key."_date_start"] );
+        unset( $_SESSION[self::$key."_date_end"] );
     }
 
     public static function usuario() {
