@@ -28,16 +28,21 @@ class table_roles
         $users = DB::table($this->table)->insert([
             [
                 'id' => '1',
-                'nombre' => 'Admin',
+                'nombre' => 'Administrador del sistema',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
                 'id' => '2',
-                'nombre' => 'Centro de atención',
+                'nombre' => 'Tester',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
                 'id' => '3',
+                'nombre' => 'Centro de atención',
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => '4',
                 'nombre' => 'Gerencia',
                 'created_at' => now(), 'updated_at' => now()
             ]

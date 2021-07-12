@@ -8,7 +8,7 @@ class controlador
         // Validamos la sesion
         Sesion::auth();
         // Validamos los permisos del menu
-        if( !Sesion::usuario()->rol->esValido('menu_gestion_contacto_gerencia') ) {
+        if( !Sesion::usuario()->rol->esValido('menu_gestion_contacto') ) {
             if(!Request::esAjax()) Response::sin_permisos();
             else throw new Exception('Usted no tiene permisos para acceder a esta pagina.');
         }
