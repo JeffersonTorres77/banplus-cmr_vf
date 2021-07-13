@@ -24,32 +24,16 @@ $("#form-search").on('submit', function(e) {
         error(mensaje) {
             cedula_actual = null;
             Alerta.error('Consultar datos', mensaje);
-            // Boton nueva gestion
-            $("#btn-nueva-gestion").removeAttr('cedula');
-            // Limpiamos seccion 1
-            $("[data=cedula]").attr('value', '');
-            $("[data=celular]").attr('value', '');
-            $("[data=gerente_banca_persona]").attr('value', '');
-            $("[data=nombre]").attr('value', '');
-            $("[data=otro_telefono]").attr('value', '');
-            $("[data=gerente_juridico]").attr('value', '');
-            $("[data=segmento]").attr('value', '');
-            $("[data=correo]").attr('value', '');
-            $("[data=vpr_juridico]").attr('value', '');
-            // Limpiamos seccion 2
-            VINCULACION_NATURAL.dolar.find('td:not(:first-child)').html('');
-            VINCULACION_NATURAL.euro.find('td:not(:first-child)').html('');
-            VINCULACION_NATURAL.corriente.find('td:not(:first-child)').html('');
-            VINCULACION_NATURAL.ahorro.find('td:not(:first-child)').html('');
-
-            VINCULACION_JURIDICA.dolar.find('td:not(:first-child)').html('');
-            VINCULACION_JURIDICA.euro.find('td:not(:first-child)').html('');
-            VINCULACION_JURIDICA.corriente.find('td:not(:first-child)').html('');
-            VINCULACION_JURIDICA.ahorro.find('td:not(:first-child)').html('');
-            // Limpiamos seccion 3
-            actualizar_tabla_gestion([]);
+            limpiar_ventana();
         },
         ok(data) {
+            if(!data.encontrado) {
+                limpiar_ventana();
+                $("[data=cedula]").html(data.cedula);
+                $("#modal-usuario-no-encontrado").modal('show');
+                return;
+            }
+
             // Principal
             let seccion_1 = data.seccion_1;
             let seccion_2 = data.seccion_2;
@@ -119,6 +103,34 @@ $("#form-search").on('submit', function(e) {
         }
     });
 });
+
+/**
+ * Limpiar ventana
+ */
+function limpiar_ventana() {
+    // Boton nueva gestion
+    $("#btn-nueva-gestion").removeAttr('cedula');
+    // Limpiamos seccion 1
+    $("[data=cedula]").attr('value', '');
+    $("[data=celular]").attr('value', '');
+    $("[data=gerente_banca_persona]").attr('value', '');
+    $("[data=nombre]").attr('value', '');
+    $("[data=otro_telefono]").attr('value', '');
+    $("[data=gerente_juridico]").attr('value', '');
+    $("[data=segmento]").attr('value', '');
+    $("[data=correo]").attr('value', '');
+    $("[data=vpr_juridico]").attr('value', '');
+    // Limpiamos seccion 2
+    let code_vinculacion_defecto = `<tr>
+        <td colspan="100">
+            <h5 class="mb-0 p-3 text-center">. . .</h5>
+        </td>
+    </tr>`;
+    VINCULACION_NATURAL.tbody.html(code_vinculacion_defecto);
+    VINCULACION_NATURAL.tbody.html(code_vinculacion_defecto);
+    // Limpiamos seccion 3
+    actualizar_tabla_gestion([]);
+}
 
 /**
  * Nueva gestion
@@ -318,6 +330,41 @@ $("#tipo_gestion").on('change', function() {
              actualizar_tabla_gestion(data.gestiones);
              $("#modal-comentario").modal('hide');
              Alerta.ok('Modificar comentario', 'Comentario modificado exitosamente.');
+         },
+         final() {
+             Loader.hide();
+         }
+     });
+ });
+
+ /**
+  * Registro de cliente
+  */
+ $("#registrar-usuario").on('click', function() {
+     $("#modal-usuario-no-encontrado").modal('hide');
+ 
+     $("#modal-registro-cliente form")[0].reset();
+     $("#modal-registro-cliente form [name=cedula]").val( $("#form-search [name=cedula]").val() );
+     $("#modal-registro-cliente").modal('show');
+ });
+ 
+ $("#modal-registro-cliente form").on('submit', function(e) {
+     e.preventDefault();
+ 
+     AJAX.enviar({
+         url: `${BASE_URL}/Gestion_Contacto/API/registrar-cliente`,
+         data: Form.json( $("#modal-registro-cliente form") ),
+         antes() {
+             Loader.show();
+         },
+         error(mensaje) {
+             Alerta.error('Registrar Cliente', mensaje);
+         },
+         ok(data) {
+             $("#form-search [name=cedula]").val(data.cedula);
+             $("#form-search").submit();
+             $("#modal-registro-cliente").modal('hide');
+             Alerta.ok('Registrar Cliente', 'Cliente registrado exitosamente.');
          },
          final() {
              Loader.hide();

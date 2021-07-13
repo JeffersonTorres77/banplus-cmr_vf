@@ -436,4 +436,109 @@
         </form>
     </div>
 </div>
+
+<!-- MODAL USUARIO NO ENCONTRADO -->
+<div class="modal fade" id="modal-usuario-no-encontrado">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="mb-0">Cliente no encontrado</h5>
+                <button class="close" type="button" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">EL cliente <b>CI: <span data="cedula"></span></b> no ha sido encontrado. Desea registrar este cliente.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" style="width: 100px;" type="button" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button class="btn btn-warning" style="width: 100px;" type="button" id="registrar-usuario">
+                    Registrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL REGISTRO CLIENTE -->
+<div class="modal fade" id="modal-registro-cliente">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
+        <form class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="mb-0">Registro de cliente</h5>
+                <button class="close" type="button" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Para continuar con el registro del nuevo cliente, complete los datos:</p>
+
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Cedula</label>
+                            <input type="number" class="form-control" name="cedula" placeholder="Cedula..." required>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Celular</label>
+                            <input type="tel" class="form-control" name="celular" placeholder="Celular..." required>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Gte. Bca. P.</label>
+                            <input type="text" class="form-control" name="gerente_banca_persona" placeholder="Gte. Bca. P...." required>
+                        </div>
+                    </div>
+                    <!-- //////////////////////////// -->
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Nombre</label>
+                            <input type="text" class="form-control" name="nombre" placeholder="Nombre..." required>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Otro Telf</label>
+                            <input type="tel" class="form-control" name="otro_telefono" placeholder="Otro Telf...">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Gte. Jurídico</label>
+                            <input type="text" class="form-control" name="gerente_juridico" placeholder="Gte. Jurídico..." required>
+                        </div>
+                    </div>
+                    <!-- //////////////////////////// -->
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Segmento</label>
+                            <input type="text" class="form-control" name="segmento" placeholder="Segmento..." required>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Correo</label>
+                            <input type="email" class="form-control" name="correo" placeholder="Correo..." required>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group mb-0">
+                            <label class="mb-1">VPR Jurídico</label>
+                            <input type="text" class="form-control" name="vpr_juridico" placeholder="VPR Jurídico..." required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" style="width: 100px;" type="button" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button class="btn btn-primary" style="width: 100px;" type="submit">
+                    Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

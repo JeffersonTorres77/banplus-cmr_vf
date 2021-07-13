@@ -30,7 +30,49 @@ class controlador
             case 'consultar_datos':
                 $cedula = Request::input('cedula', $requerido = TRUE);
                 $objPresident = President::where('ci', $cedula)->first();
-                if($objPresident == NULL) throw new Exception('Cedula no encontrada.');
+                if($objPresident == NULL)
+                {
+                    // Si no se encuentra en la tabla de president, buscamos en la de clientes temporales
+                    $objCliente = ClienteTemporal::where('cedula', $cedula)->first();
+                    if($objCliente == NULL) return Response::json([
+                        'encontrado' => FALSE,
+                        'cedula' => $cedula,
+                    ]);
+
+                    $gestiones = gestiones_datatable($cedula);
+                    return Response::json([
+                        'encontrado' => TRUE,
+                        'cedula' => $cedula,
+                        'editable' => TRUE,
+                        'seccion_1' => [
+                            'cedula'                    => $objCliente->cedula,
+                            'celular'                   => $objCliente->celular,
+                            'gerente_banca_president'   => $objCliente->gerente_banca_personal,
+                            'nombre'                    => $objCliente->nombre,
+                            'otro_telefono'             => $objCliente->otro_telefono,
+                            'gerente_juridico'          => $objCliente->gerente_juridico,
+                            'segmento'                  => $objCliente->segmento,
+                            'correo'                    => $objCliente->correo,
+                            'vpr_juridico'              => $objCliente->vpr_juridico,
+                        ],
+                        /**
+                         * Seccion 2
+                         * 1 [Verde]    - Cuenta abierda con saldo
+                         * 2 [Amarillo] - Cuenta abierta, saldo menor al minimo
+                         * 3 [Rojo]     - No tiene el producto
+                         */
+                        'seccion_2' => [
+                            'natural-bs'        => 3,
+                            'natural-divisas'   => 3,
+                            'natural-bi'        => 3,
+                            'juridica-bs'       => 3,
+                            'juridica-divisas'  => 3,
+                            'juridica-bi'       => 3,
+                        ],
+                        'seccion_3' => $gestiones
+                    ]);
+                }
+
                 $objSegmento = Segmento::where('CI', $objPresident->ci)->first();
 
                 /**
@@ -132,10 +174,22 @@ class controlador
                  */
                 $gestiones = gestiones_datatable($cedula);
 
+                /**
+                 * Borramos el cliente recien encontrado del area de clientes temporales
+                 */
+                if(ClienteTemporal::where('cedula', $objPresident->ci)->count() > 0) {
+                    DB::beginTransaction();
+                    ClienteTemporal::where('cedula', $objPresident->ci)->delete();
+                    DB::commit();
+                }
+
                  /**
                   * Respuesta
                   */
                 return Response::json([
+                    'encontrado' => TRUE,
+                    'cedula' => $cedula,
+                    'editable' => FALSE,
                     'seccion_1' => [
                         'cedula'                    => $cedula,
                         'celular'                   => $celular,
@@ -172,7 +226,14 @@ class controlador
                 
                 // Validamos parametros
                 $objPresident = President::where('ci', $cedula)->first();
-                if($objPresident == NULL) throw new Exception('Cedula no encontrada.');
+                if($objPresident != NULL) {
+                    $cedula = $objPresident->ci;
+                }
+                else {
+                    $objCliente = ClienteTemporal::where('cedula', $cedula)->first();
+                    if($objCliente == NULL) throw new Exception('Cliente no encontrado.');
+                    $cedula = $objCliente->cedula;
+                }
 
                 $objTipo_llamada = TipoLlamada::find($tipo_llamada_id);
                 if($objTipo_llamada == NULL) throw new Exception('Tipo de llamada invalida.');
@@ -190,7 +251,7 @@ class controlador
                 $objGestion = new Gestion;
                 $objGestion->fecha_asignacion           = NULL;
                 $objGestion->fecha_gestion              = $fecha_gestion;
-                $objGestion->ci                         = $objPresident->ci;
+                $objGestion->ci                         = $cedula;
                 $objGestion->usuario_id                 = $objEjecutivo->id;
                 $objGestion->tipo_llamada_id            = $objTipo_llamada->id;
                 $objGestion->tipo_gestion_id            = $objEstatus_gestion->tipo_id;
@@ -204,12 +265,12 @@ class controlador
 
                 DB::commit();
 
-                $gestiones = gestiones_datatable($objPresident->ci);
+                $gestiones = gestiones_datatable($cedula);
 
                 // Retornamos
                 return Response::json([
                     'gestiones' => $gestiones
-                ]);
+                ]); 
             break;
 
             /**
@@ -235,6 +296,44 @@ class controlador
                 // Retornamos
                 return Response::json([
                     'gestiones' => $gestiones
+                ]);
+            break;
+
+            /**
+             * Registrar cliente temporal
+             */
+            case 'registrar-cliente':
+                $cedula                    = Request::input('cedula', $requerido = TRUE);
+                $celular                   = Request::input('celular', $requerido = TRUE);
+                $gerente_banca_persona     = Request::input('gerente_banca_persona', $requerido = TRUE);
+                $nombre                    = Request::input('nombre', $requerido = TRUE);
+                $otro_telefono             = Request::input('otro_telefono', $requerido = TRUE);
+                $gerente_juridico          = Request::input('gerente_juridico', $requerido = TRUE);
+                $segmento                  = Request::input('segmento', $requerido = TRUE);
+                $correo                    = Request::input('correo', $requerido = TRUE);
+                $vpr_juridico              = Request::input('vpr_juridico', $requerido = TRUE);
+
+                if( President::where('ci', $cedula)->count() > 0 ) throw new Exception('La cedula ya esta registrada.');
+                if( ClienteTemporal::where('cedula', $cedula)->count() > 0 ) throw new Exception('La cedula ya esta registrada.');
+
+                DB::beginTransaction();
+                $objCliente = new ClienteTemporal;
+                $objCliente->cedula = $cedula;
+                $objCliente->nombre = $nombre;
+                $objCliente->segmento = $segmento;
+                $objCliente->celular = $celular;
+                $objCliente->otro_telefono = $otro_telefono;
+                $objCliente->gerente_banca_persona = $gerente_banca_persona;
+                $objCliente->gerente_juridico = $gerente_juridico;
+                $objCliente->correo = $correo;
+                $objCliente->vpr_juridico = $vpr_juridico;
+                $objCliente->save();
+                DB::commit();
+
+                // Retornamos
+                return Response::json([
+                    'ok' => TRUE,
+                    'cedula' => $objCliente->cedula
                 ]);
             break;
 

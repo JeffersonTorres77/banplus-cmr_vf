@@ -14,9 +14,9 @@ class table_clientes_temporales
             $table->string('nombre');
             $table->string('segmento');
             $table->string('celular');
-            $table->string('otro_celular');
+            $table->string('otro_telefono')->nullable();
             $table->string('correo');
-            $table->string('gerente_banca_personal');
+            $table->string('gerente_banca_persona');
             $table->string('gerente_juridico');
             $table->string('vpr_juridico');
             $table->timestamps();
