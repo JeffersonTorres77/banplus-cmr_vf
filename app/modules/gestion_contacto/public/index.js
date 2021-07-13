@@ -30,6 +30,22 @@ $("#form-search").on('submit', function(e) {
                 return;
             }
 
+            if(data.editable) {
+                $("#btn-modificar-datos").attr('cedula', data.cedula).removeAttr('disabled');
+                $("[data][name=celular]").removeAttr('disabled');
+                $("[data][name=gerente_banca_persona]").removeAttr('disabled');
+                $("[data][name=nombre]").removeAttr('disabled');
+                $("[data][name=otro_telefono]").removeAttr('disabled');
+                $("[data][name=gerente_juridico]").removeAttr('disabled');
+                $("[data][name=segmento]").removeAttr('disabled');
+                $("[data][name=correo]").removeAttr('disabled');
+                $("[data][name=vpr_juridico]").removeAttr('disabled');
+                $("#collapse-editar").collapse('show');
+            } else {
+                $("#btn-modificar-datos").removeAttr('cedula').attr('disabled', '');
+                $("#collapse-editar").collapse('hide');
+            }
+
             // Principal
             let seccion_1 = data.seccion_1;
             let seccion_2 = data.seccion_2;
@@ -90,8 +106,19 @@ $("#form-search").on('submit', function(e) {
  */
 function limpiar_ventana() {
     // Boton nueva gestion
+    $("#btn-modificar-datos").removeAttr('cedula');
     $("#btn-nueva-gestion").removeAttr('cedula');
+    $("#collapse-editar").collapse('hide');
     // Limpiamos seccion 1
+    $("[data][name=celular]").attr('disabled', '');
+    $("[data][name=gerente_banca_persona]").attr('disabled', '');
+    $("[data][name=nombre]").attr('disabled', '');
+    $("[data][name=otro_telefono]").attr('disabled', '');
+    $("[data][name=gerente_juridico]").attr('disabled', '');
+    $("[data][name=segmento]").attr('disabled', '');
+    $("[data][name=correo]").attr('disabled', '');
+    $("[data][name=vpr_juridico]").attr('disabled', '');
+
     $("[data=cedula]").attr('value', '');
     $("[data=celular]").attr('value', '');
     $("[data=gerente_banca_persona]").attr('value', '');
@@ -345,6 +372,47 @@ $("#modal-registro-cliente form").on('submit', function(e) {
             $("#form-search").submit();
             $("#modal-registro-cliente").modal('hide');
             Alerta.ok('Registrar Cliente', 'Cliente registrado exitosamente.');
+        },
+        final() {
+            Loader.hide();
+        }
+    });
+});
+
+/**
+ * Modificar datos del cliente
+ */
+$("#btn-modificar-datos").on('click', function() {
+    let cedula = $(this).attr('cedula');
+    if(cedula == undefined || cedula == null || cedula == "") {
+        Alerta.error('Modificar cliente', 'Error inesperado, actualice la pagina.');
+        return;
+    }
+    let data = {
+        cedula:                 cedula,
+        celular:                $("[data][name=celular]").val(),
+        gerente_banca_persona:  $("[data][name=gerente_banca_persona]").val(),
+        nombre:                 $("[data][name=nombre]").val(),
+        otro_telefono:          $("[data][name=otro_telefono]").val(),
+        gerente_juridico:       $("[data][name=gerente_juridico]").val(),
+        segmento:               $("[data][name=segmento]").val(),
+        correo:                 $("[data][name=correo]").val(),
+        vpr_juridico:           $("[data][name=vpr_juridico]").val()
+    };
+
+    AJAX.enviar({
+        url: `${BASE_URL}/Gestion_Contacto/API/modificar-cliente`,
+        data: data,
+        antes() {
+            Loader.show();
+        },
+        error(mensaje) {
+            Alerta.error('Modificar Cliente', mensaje);
+        },
+        ok(data) {
+            $("#form-search [name=cedula]").val(data.cedula);
+            $("#form-search").submit();
+            Alerta.ok('Modificar Cliente', 'Cliente modificar exitosamente.');
         },
         final() {
             Loader.hide();

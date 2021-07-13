@@ -317,6 +317,7 @@ class controlador
                 if( ClienteTemporal::where('cedula', $cedula)->count() > 0 ) throw new Exception('La cedula ya esta registrada.');
 
                 DB::beginTransaction();
+
                 $objCliente = new ClienteTemporal;
                 $objCliente->cedula = $cedula;
                 $objCliente->nombre = $nombre;
@@ -328,6 +329,45 @@ class controlador
                 $objCliente->correo = $correo;
                 $objCliente->vpr_juridico = $vpr_juridico;
                 $objCliente->save();
+
+                DB::commit();
+
+                // Retornamos
+                return Response::json([
+                    'ok' => TRUE,
+                    'cedula' => $objCliente->cedula
+                ]);
+            break;
+
+            /**
+             * Modificar cliente temporal
+             */
+            case 'modificar-cliente':
+                $cedula                    = Request::input('cedula', $requerido = TRUE);
+                $celular                   = Request::input('celular', $requerido = TRUE);
+                $gerente_banca_persona     = Request::input('gerente_banca_persona', $requerido = TRUE);
+                $nombre                    = Request::input('nombre', $requerido = TRUE);
+                $otro_telefono             = Request::input('otro_telefono', $requerido = TRUE);
+                $gerente_juridico          = Request::input('gerente_juridico', $requerido = TRUE);
+                $segmento                  = Request::input('segmento', $requerido = TRUE);
+                $correo                    = Request::input('correo', $requerido = TRUE);
+                $vpr_juridico              = Request::input('vpr_juridico', $requerido = TRUE);
+
+                $objCliente = ClienteTemporal::where('cedula', $cedula)->first();
+                if($objCliente == NULL) throw new Exception('Cedula no encontrada entre los datos de los clientes temporales');
+
+                DB::beginTransaction();
+
+                $objCliente->nombre = $nombre;
+                $objCliente->segmento = $segmento;
+                $objCliente->celular = $celular;
+                $objCliente->otro_telefono = $otro_telefono;
+                $objCliente->gerente_banca_persona = $gerente_banca_persona;
+                $objCliente->gerente_juridico = $gerente_juridico;
+                $objCliente->correo = $correo;
+                $objCliente->vpr_juridico = $vpr_juridico;
+                $objCliente->save();
+
                 DB::commit();
 
                 // Retornamos

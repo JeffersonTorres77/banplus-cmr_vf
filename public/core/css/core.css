@@ -78,12 +78,8 @@
     height: 32px;
 }
 
-.navbar-success {
-    background-color: #a4c639 !important;
-}
-
 .navbar-dark {
-    border-color: #99bb2f !important;
+    border-color: #006de2 !important;
 }
 
 .brand-link {
