@@ -89,6 +89,11 @@ class controlador
                 $segmento   = ($objSegmento != NULL) ? $objSegmento->Segmento : NULL;
 
                 // Segunda fila
+                $segmento_membresia = $objPresident->segmento;
+                $grupo_vinculacion = $objPresident->grupo_final;
+                $monto_uvc = floatval( $objPresident->limite_uvc );
+
+                // Tercera fila
                 if(!empty($objPresident->celular) ) {
                     $celular = $objPresident->celular;
                 }
@@ -105,7 +110,7 @@ class controlador
                     $correo = ($objContacto != NULL) ? $objContacto->Email : NULL;
                 }
 
-                // Tercera fila
+                // Cuarta fila
                 $gerente_banca_president    = $objPresident->gerente_atencion_origen;
                 $gerente_juridico           = $objPresident->gerente_atencion;
                 $vpr_juridico               = $objPresident->vicepresidencia;
@@ -198,9 +203,9 @@ class controlador
                         'cedula'                    => $cedula,
                         'nombre'                    => $nombre,
                         'segmento'                  => $segmento,
-                        'segmento_membresia'        => '',
-                        'grupo_vinculacion'         => '',
-                        'monto_uvc'                 => '',
+                        'segmento_membresia'        => $segmento_membresia,
+                        'grupo_vinculacion'         => $grupo_vinculacion,
+                        'monto_uvc'                 => $monto_uvc,
                         'gerente_banca_president'   => $gerente_banca_president,
                         'gerente_juridico'          => $gerente_juridico,
                         'vpr_juridico'              => $vpr_juridico,

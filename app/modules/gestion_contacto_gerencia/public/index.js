@@ -40,7 +40,7 @@ $("#form-search").on('submit', function(e) {
                 $("[data][name=segmento]").removeAttr('disabled');
                 $("[data][name=segmento_membresia]").removeAttr('disabled');
                 $("[data][name=grupo_vinculacion]").removeAttr('disabled');
-                $("[data][name=monto_uvc]").removeAttr('disabled');
+                $("[data][name=monto_uvc]").removeAttr('disabled').attr('type', 'number');
                 $("[data][name=gerente_banca_persona]").removeAttr('disabled');
                 $("[data][name=gerente_juridico]").removeAttr('disabled');
                 $("[data][name=vpr_juridico]").removeAttr('disabled');
@@ -54,7 +54,7 @@ $("#form-search").on('submit', function(e) {
                 $("[data][name=segmento]").attr('disabled', '');
                 $("[data][name=segmento_membresia]").attr('disabled', '');
                 $("[data][name=grupo_vinculacion]").attr('disabled', '');
-                $("[data][name=monto_uvc]").attr('disabled', '');
+                $("[data][name=monto_uvc]").attr('disabled', '').attr('type', 'text');
                 $("[data][name=gerente_banca_persona]").attr('disabled', '');
                 $("[data][name=gerente_juridico]").attr('disabled', '');
                 $("[data][name=vpr_juridico]").attr('disabled', '');
@@ -89,7 +89,11 @@ $("#form-search").on('submit', function(e) {
             $("[data=segmento]").attr('value', seccion_1.segmento);
             $("[data=segmento_membresia]").attr('value', seccion_1.segmento_membresia);
             $("[data=grupo_vinculacion]").attr('value', seccion_1.grupo_vinculacion);
-            $("[data=monto_uvc]").attr('value', seccion_1.monto_uvc);
+            if($("[data=monto_uvc]").attr('type') == "text") {
+                $("[data=monto_uvc]").attr('value', formatNumber(seccion_1.monto_uvc));
+            } else {
+                $("[data=monto_uvc]").attr('value', seccion_1.monto_uvc);
+            }
             $("[data=gerente_banca_persona]").attr('value', seccion_1.gerente_banca_president);
             $("[data=gerente_juridico]").attr('value', seccion_1.gerente_juridico);
             $("[data=vpr_juridico]").attr('value', seccion_1.vpr_juridico);
@@ -150,7 +154,7 @@ function limpiar_ventana() {
     $("[data][name=segmento]").attr('disabled', '');
     $("[data][name=segmento_membresia]").attr('disabled', '');
     $("[data][name=grupo_vinculacion]").attr('disabled', '');
-    $("[data][name=monto_uvc]").attr('disabled', '');
+    $("[data][name=monto_uvc]").attr('disabled', '').attr('type', 'text');
     $("[data][name=gerente_banca_persona]").attr('disabled', '');
     $("[data][name=gerente_juridico]").attr('disabled', '');
     $("[data][name=vpr_juridico]").attr('disabled', '');
