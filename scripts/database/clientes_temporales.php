@@ -13,6 +13,9 @@ class table_clientes_temporales
             $table->string('cedula');
             $table->string('nombre');
             $table->string('segmento');
+            $table->string('segmento_membresia')->nullable();
+            $table->string('grupo_vinculacion')->nullable();
+            $table->float('monto_uvc')->nullable();
             $table->string('celular');
             $table->string('otro_telefono')->nullable();
             $table->string('correo');

@@ -10,6 +10,7 @@ Database::iniciar();
 $files = System::getFolderFiles( BASE_DIR."/scripts/database" );
 foreach($files as $file) { require($file); }
 
+$table_gerentes->down();
 $table_clientes_temporales->down();
 $table_gestiones->down();
 $table_resolucion_comite->down();
@@ -33,3 +34,4 @@ $table_resolucion_comite->up()->default();
 $table_membresia_president->up()->default();
 $table_gestiones->up()->default();
 $table_clientes_temporales->up()->default();
+$table_gerentes->up()->default();

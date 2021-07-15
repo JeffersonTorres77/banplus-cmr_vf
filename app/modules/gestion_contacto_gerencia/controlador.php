@@ -21,6 +21,7 @@ class controlador
             'estatus_gestion'   => EstatusGestion::select('id', 'tipo_id', 'nombre')->get(),
             'resolucion_comite'   => ResolucionComite::select('id', 'nombre')->get(),
             'membresia_president'   => MembresiaPresident::select('id', 'nombre')->get(),
+            'gerentes'          => Gerente::select('id', 'region', 'nombre')->get(),
         ]);
     }
 
@@ -48,14 +49,17 @@ class controlador
                         'editable' => TRUE,
                         'seccion_1' => [
                             'cedula'                    => $objCliente->cedula,
-                            'celular'                   => $objCliente->celular,
-                            'gerente_banca_president'   => $objCliente->gerente_banca_personal,
                             'nombre'                    => $objCliente->nombre,
-                            'otro_telefono'             => $objCliente->otro_telefono,
-                            'gerente_juridico'          => $objCliente->gerente_juridico,
                             'segmento'                  => $objCliente->segmento,
-                            'correo'                    => $objCliente->correo,
+                            'segmento_membresia'        => $objCliente->segmento_membresia,
+                            'grupo_vinculacion'         => $objCliente->grupo_vinculacion,
+                            'monto_uvc'                 => bcdiv( floatval($objCliente->monto_uvc), '1', 2 ),
+                            'gerente_banca_president'   => $objCliente->gerente_banca_personal,
+                            'gerente_juridico'          => $objCliente->gerente_juridico,
                             'vpr_juridico'              => $objCliente->vpr_juridico,
+                            'celular'                   => $objCliente->celular,
+                            'otro_telefono'             => $objCliente->otro_telefono,
+                            'correo'                    => $objCliente->correo,
                         ],
                         /**
                          * Seccion 2
@@ -267,14 +271,17 @@ class controlador
                     'editable' => FALSE,
                     'seccion_1' => [
                         'cedula'                    => $cedula,
-                        'celular'                   => $celular,
-                        'gerente_banca_president'   => $gerente_banca_president,
                         'nombre'                    => $nombre,
-                        'otro_telefono'             => $otro_telefono,
-                        'gerente_juridico'          => $gerente_juridico,
                         'segmento'                  => $segmento,
-                        'correo'                    => $correo,
+                        'segmento_membresia'        => '',
+                        'grupo_vinculacion'         => '',
+                        'monto_uvc'                 => '',
+                        'gerente_banca_president'   => $gerente_banca_president,
+                        'gerente_juridico'          => $gerente_juridico,
                         'vpr_juridico'              => $vpr_juridico,
+                        'celular'                   => $celular,
+                        'otro_telefono'             => $otro_telefono,
+                        'correo'                    => $correo,
                     ],
                     'seccion_2' => [
                         'mes_1' => nombre_mes( now('m') - 1 )['nombre_corto'],
@@ -392,15 +399,22 @@ class controlador
              * Registrar cliente temporal
              */
             case 'registrar-cliente':
-                $cedula                    = Request::input('cedula', $requerido = TRUE);
-                $celular                   = Request::input('celular', $requerido = TRUE);
-                $gerente_banca_persona     = Request::input('gerente_banca_persona', $requerido = TRUE);
-                $nombre                    = Request::input('nombre', $requerido = TRUE);
-                $otro_telefono             = Request::input('otro_telefono', $requerido = TRUE);
-                $gerente_juridico          = Request::input('gerente_juridico', $requerido = TRUE);
-                $segmento                  = Request::input('segmento', $requerido = TRUE);
-                $correo                    = Request::input('correo', $requerido = TRUE);
-                $vpr_juridico              = Request::input('vpr_juridico', $requerido = TRUE);
+                $cedula                     = Request::input('cedula', $requerido = TRUE);
+                $nombre                     = Request::input('nombre', $requerido = TRUE);
+                $segmento                   = Request::input('segmento', $requerido = TRUE);
+                $segmento_membresia         = Request::input('segmento_membresia', $requerido = TRUE);
+                $grupo_vinculacion          = Request::input('grupo_vinculacion', $requerido = TRUE);
+                $monto_uvc                  = Request::input('monto_uvc', $requerido = TRUE);
+                $gerente_banca_persona      = Request::input('gerente_banca_persona', $requerido = TRUE);
+                $gerente_juridico           = Request::input('gerente_juridico', $requerido = TRUE);
+                $vpr_juridico               = Request::input('vpr_juridico', $requerido = TRUE);
+                $celular                    = Request::input('celular', $requerido = TRUE);
+                $otro_telefono              = Request::input('otro_telefono', $requerido = TRUE);
+                $correo                     = Request::input('correo', $requerido = TRUE);
+
+                if( !is_numeric($monto_uvc) ) throw new Exception("El campo 'Monto UVC' debe ser numerico.");
+                $monto_uvc = floatval( $monto_uvc );
+                $monto_uvc = bcdiv($monto_uvc, '1', 2);
 
                 if( President::where('ci', $cedula)->count() > 0 ) throw new Exception('La cedula ya esta registrada.');
                 if( ClienteTemporal::where('cedula', $cedula)->count() > 0 ) throw new Exception('La cedula ya esta registrada.');
@@ -411,12 +425,15 @@ class controlador
                 $objCliente->cedula = $cedula;
                 $objCliente->nombre = $nombre;
                 $objCliente->segmento = $segmento;
-                $objCliente->celular = $celular;
-                $objCliente->otro_telefono = $otro_telefono;
+                $objCliente->segmento_membresia = $segmento_membresia;
+                $objCliente->grupo_vinculacion = $grupo_vinculacion;
+                $objCliente->monto_uvc = $monto_uvc;
                 $objCliente->gerente_banca_persona = $gerente_banca_persona;
                 $objCliente->gerente_juridico = $gerente_juridico;
-                $objCliente->correo = $correo;
                 $objCliente->vpr_juridico = $vpr_juridico;
+                $objCliente->celular = $celular;
+                $objCliente->otro_telefono = $otro_telefono;
+                $objCliente->correo = $correo;
                 $objCliente->save();
 
                 DB::commit();
@@ -432,15 +449,22 @@ class controlador
              * Modificar cliente temporal
              */
             case 'modificar-cliente':
-                $cedula                    = Request::input('cedula', $requerido = TRUE);
-                $celular                   = Request::input('celular', $requerido = TRUE);
-                $gerente_banca_persona     = Request::input('gerente_banca_persona', $requerido = TRUE);
-                $nombre                    = Request::input('nombre', $requerido = TRUE);
-                $otro_telefono             = Request::input('otro_telefono', $requerido = TRUE);
-                $gerente_juridico          = Request::input('gerente_juridico', $requerido = TRUE);
-                $segmento                  = Request::input('segmento', $requerido = TRUE);
-                $correo                    = Request::input('correo', $requerido = TRUE);
-                $vpr_juridico              = Request::input('vpr_juridico', $requerido = TRUE);
+                $cedula                     = Request::input('cedula', $requerido = TRUE);
+                $nombre                     = Request::input('nombre', $requerido = TRUE);
+                $segmento                   = Request::input('segmento', $requerido = TRUE);
+                $segmento_membresia         = Request::input('segmento_membresia', $requerido = TRUE);
+                $grupo_vinculacion          = Request::input('grupo_vinculacion', $requerido = TRUE);
+                $monto_uvc                  = Request::input('monto_uvc', $requerido = TRUE);
+                $gerente_banca_persona      = Request::input('gerente_banca_persona', $requerido = TRUE);
+                $gerente_juridico           = Request::input('gerente_juridico', $requerido = TRUE);
+                $vpr_juridico               = Request::input('vpr_juridico', $requerido = TRUE);
+                $celular                    = Request::input('celular', $requerido = TRUE);
+                $otro_telefono              = Request::input('otro_telefono', $requerido = TRUE);
+                $correo                     = Request::input('correo', $requerido = TRUE);
+                
+                if( !is_numeric($monto_uvc) ) throw new Exception("El campo 'Monto UVC' debe ser numerico.");
+                $monto_uvc = floatval( $monto_uvc );
+                $monto_uvc = bcdiv($monto_uvc, '1', 2);
 
                 $objCliente = ClienteTemporal::where('cedula', $cedula)->first();
                 if($objCliente == NULL) throw new Exception('Cedula no encontrada entre los datos de los clientes temporales');
@@ -449,12 +473,15 @@ class controlador
 
                 $objCliente->nombre = $nombre;
                 $objCliente->segmento = $segmento;
-                $objCliente->celular = $celular;
-                $objCliente->otro_telefono = $otro_telefono;
+                $objCliente->segmento_membresia = $segmento_membresia;
+                $objCliente->grupo_vinculacion = $grupo_vinculacion;
+                $objCliente->monto_uvc = $monto_uvc;
                 $objCliente->gerente_banca_persona = $gerente_banca_persona;
                 $objCliente->gerente_juridico = $gerente_juridico;
-                $objCliente->correo = $correo;
                 $objCliente->vpr_juridico = $vpr_juridico;
+                $objCliente->celular = $celular;
+                $objCliente->otro_telefono = $otro_telefono;
+                $objCliente->correo = $correo;
                 $objCliente->save();
 
                 DB::commit();

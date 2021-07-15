@@ -64,6 +64,32 @@
                 <!-- FILA 2 -->
                 <div class="col-4">
                     <div class="form-group row">
+                        <label class="col-md-4 col-form-label text-right">Segmento Membresía</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" name="segmento_membresia" data="segmento_membresia" class="form-control form-control-sm" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label text-right">Grupo Vinculación</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="text" name="grupo_vinculacion" data="grupo_vinculacion" class="form-control form-control-sm" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label text-right">Monto UVC</label>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <input type="number" step="0.01" min="0" name="monto_uvc" data="monto_uvc" class="form-control form-control-sm" disabled>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- FILA 3 -->
+                <div class="col-4">
+                    <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Gte. Bca. P.</label>
                         <div class="col-md-8 d-flex align-items-center">
                             <input type="text" name="gerente_banca_persona" data="gerente_banca_persona" class="form-control form-control-sm" disabled>
@@ -87,7 +113,7 @@
                     </div>
                 </div>
                 
-                <!-- FILA 3 -->
+                <!-- FILA 4 -->
                 <div class="col-4">
                     <div class="form-group row">
                         <label class="col-md-4 col-form-label text-right">Celular</label>
@@ -129,7 +155,7 @@
                     <hr>
                 </div>
 
-                <!-- FILA 4 -->
+                <!-- FILA 5 -->
                 <div class="col-6 d-none">
                     <div class="form-group">
                         <label class="mb-1 text-primary">Vinculación Natural</label>
@@ -168,7 +194,7 @@
                     <hr>
                 </div>
 
-                <!-- FILA 5 -->
+                <!-- FILA 6 -->
                 <div class="col-12">
                     <label class="mb-1">Gestión Histórica</label>
                     <div class="table-responsive mb-3 w-100">
@@ -463,6 +489,25 @@
                         <div class="form-group">
                             <label class="mb-1">Segmento</label>
                             <input type="text" class="form-control" name="segmento" placeholder="Segmento..." required>
+                        </div>
+                    </div>
+                    <!-- //////////////////////////// -->
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Segmento Membresía</label>
+                            <input type="text" class="form-control" name="segmento_membresia" placeholder="Segmento Membresía..." required>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label class="mb-1">Grupo Vinculación</label>
+                            <input type="text" class="form-control" name="grupo_vinculacion" placeholder="Grupo Vinculación..." required>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group mb-0">
+                            <label class="mb-1">Monto UVC</label>
+                            <input type="number" step="0.01" min="0" class="form-control" name="monto_uvc" placeholder="Monto UVC..." required>
                         </div>
                     </div>
                     <!-- //////////////////////////// -->

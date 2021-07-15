@@ -32,17 +32,31 @@ $("#form-search").on('submit', function(e) {
 
             if(data.editable) {
                 $("#btn-modificar-datos").attr('cedula', data.cedula).removeAttr('disabled');
-                $("[data][name=celular]").removeAttr('disabled');
-                $("[data][name=gerente_banca_persona]").removeAttr('disabled');
                 $("[data][name=nombre]").removeAttr('disabled');
-                $("[data][name=otro_telefono]").removeAttr('disabled');
-                $("[data][name=gerente_juridico]").removeAttr('disabled');
                 $("[data][name=segmento]").removeAttr('disabled');
-                $("[data][name=correo]").removeAttr('disabled');
+                $("[data][name=segmento_membresia]").removeAttr('disabled');
+                $("[data][name=grupo_vinculacion]").removeAttr('disabled');
+                $("[data][name=monto_uvc]").removeAttr('disabled');
+                $("[data][name=gerente_banca_persona]").removeAttr('disabled');
+                $("[data][name=gerente_juridico]").removeAttr('disabled');
                 $("[data][name=vpr_juridico]").removeAttr('disabled');
+                $("[data][name=celular]").removeAttr('disabled');
+                $("[data][name=otro_telefono]").removeAttr('disabled');
+                $("[data][name=correo]").removeAttr('disabled');
                 $("#collapse-editar").collapse('show');
             } else {
                 $("#btn-modificar-datos").removeAttr('cedula').attr('disabled', '');
+                $("[data][name=nombre]").attr('disabled', '');
+                $("[data][name=segmento]").attr('disabled', '');
+                $("[data][name=segmento_membresia]").attr('disabled', '');
+                $("[data][name=grupo_vinculacion]").attr('disabled', '');
+                $("[data][name=monto_uvc]").attr('disabled', '');
+                $("[data][name=gerente_banca_persona]").attr('disabled', '');
+                $("[data][name=gerente_juridico]").attr('disabled', '');
+                $("[data][name=vpr_juridico]").attr('disabled', '');
+                $("[data][name=celular]").attr('disabled', '');
+                $("[data][name=otro_telefono]").attr('disabled', '');
+                $("[data][name=correo]").attr('disabled', '');
                 $("#collapse-editar").collapse('hide');
             }
 
@@ -67,14 +81,17 @@ $("#form-search").on('submit', function(e) {
             if( seccion_1.vpr_juridico == null )             seccion_1.vpr_juridico = valor_defecto;
             
             $("[data=cedula]").attr('value', seccion_1.cedula);
-            $("[data=celular]").attr('value', seccion_1.celular);
-            $("[data=gerente_banca_persona]").attr('value', seccion_1.gerente_banca_president);
             $("[data=nombre]").attr('value', seccion_1.nombre);
-            $("[data=otro_telefono]").attr('value', seccion_1.otro_telefono);
-            $("[data=gerente_juridico]").attr('value', seccion_1.gerente_juridico);
             $("[data=segmento]").attr('value', seccion_1.segmento);
-            $("[data=correo]").attr('value', seccion_1.correo);
+            $("[data=segmento_membresia]").attr('value', seccion_1.segmento_membresia);
+            $("[data=grupo_vinculacion]").attr('value', seccion_1.grupo_vinculacion);
+            $("[data=monto_uvc]").attr('value', seccion_1.monto_uvc);
+            $("[data=gerente_banca_persona]").attr('value', seccion_1.gerente_banca_president);
+            $("[data=gerente_juridico]").attr('value', seccion_1.gerente_juridico);
             $("[data=vpr_juridico]").attr('value', seccion_1.vpr_juridico);
+            $("[data=celular]").attr('value', seccion_1.celular);
+            $("[data=otro_telefono]").attr('value', seccion_1.otro_telefono);
+            $("[data=correo]").attr('value', seccion_1.correo);
 
             // Seccion 2
             for(let flag of FLAGS) {
@@ -110,24 +127,30 @@ function limpiar_ventana() {
     $("#btn-nueva-gestion").removeAttr('cedula');
     $("#collapse-editar").collapse('hide');
     // Limpiamos seccion 1
-    $("[data][name=celular]").attr('disabled', '');
-    $("[data][name=gerente_banca_persona]").attr('disabled', '');
     $("[data][name=nombre]").attr('disabled', '');
-    $("[data][name=otro_telefono]").attr('disabled', '');
-    $("[data][name=gerente_juridico]").attr('disabled', '');
     $("[data][name=segmento]").attr('disabled', '');
-    $("[data][name=correo]").attr('disabled', '');
+    $("[data][name=segmento_membresia]").attr('disabled', '');
+    $("[data][name=grupo_vinculacion]").attr('disabled', '');
+    $("[data][name=monto_uvc]").attr('disabled', '');
+    $("[data][name=gerente_banca_persona]").attr('disabled', '');
+    $("[data][name=gerente_juridico]").attr('disabled', '');
     $("[data][name=vpr_juridico]").attr('disabled', '');
+    $("[data][name=celular]").attr('disabled', '');
+    $("[data][name=otro_telefono]").attr('disabled', '');
+    $("[data][name=correo]").attr('disabled', '');
 
     $("[data=cedula]").attr('value', '');
-    $("[data=celular]").attr('value', '');
-    $("[data=gerente_banca_persona]").attr('value', '');
     $("[data=nombre]").attr('value', '');
-    $("[data=otro_telefono]").attr('value', '');
-    $("[data=gerente_juridico]").attr('value', '');
     $("[data=segmento]").attr('value', '');
-    $("[data=correo]").attr('value', '');
+    $("[data=segmento_membresia]").attr('value', '');
+    $("[data=grupo_vinculacion]").attr('value', '');
+    $("[data=monto_uvc]").attr('value', '');
+    $("[data=gerente_banca_persona]").attr('value', '');
+    $("[data=gerente_juridico]").attr('value', '');
     $("[data=vpr_juridico]").attr('value', '');
+    $("[data=celular]").attr('value', '');
+    $("[data=otro_telefono]").attr('value', '');
+    $("[data=correo]").attr('value', '');
     // Limpiamos seccion 2
     for(let flag of FLAGS) {
         $(`#${ flag.id }`).removeClass('text-success');
@@ -390,14 +413,17 @@ $("#btn-modificar-datos").on('click', function() {
     }
     let data = {
         cedula:                 cedula,
-        celular:                $("[data][name=celular]").val(),
-        gerente_banca_persona:  $("[data][name=gerente_banca_persona]").val(),
         nombre:                 $("[data][name=nombre]").val(),
-        otro_telefono:          $("[data][name=otro_telefono]").val(),
-        gerente_juridico:       $("[data][name=gerente_juridico]").val(),
         segmento:               $("[data][name=segmento]").val(),
-        correo:                 $("[data][name=correo]").val(),
-        vpr_juridico:           $("[data][name=vpr_juridico]").val()
+        segmento_membresia:     $("[data][name=segmento_membresia]").val(),
+        grupo_vinculacion:      $("[data][name=grupo_vinculacion]").val(),
+        monto_uvc:              $("[data][name=monto_uvc]").val(),
+        gerente_banca_persona:  $("[data][name=gerente_banca_persona]").val(),
+        gerente_juridico:       $("[data][name=gerente_juridico]").val(),
+        vpr_juridico:           $("[data][name=vpr_juridico]").val(),
+        celular:                $("[data][name=celular]").val(),
+        otro_telefono:          $("[data][name=otro_telefono]").val(),
+        correo:                 $("[data][name=correo]").val()
     };
 
     AJAX.enviar({
