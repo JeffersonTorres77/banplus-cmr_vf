@@ -11,6 +11,8 @@ class table_tipos_gestion
         DB::schema()->create($this->table, function ($table) {
             $table->increments('id');
             $table->string('nombre');
+            $table->string('ver_centro_atencion');
+            $table->string('ver_gerente');
             $table->timestamps();
         });
 
@@ -29,16 +31,31 @@ class table_tipos_gestion
             [
                 'id' => '1',
                 'nombre' => 'Reclamo',
+                'ver_centro_atencion' => '1', 'ver_gerente' => '1',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
                 'id' => '2',
                 'nombre' => 'Informativa',
+                'ver_centro_atencion' => '1', 'ver_gerente' => '1',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
                 'id' => '3',
                 'nombre' => 'Promoción',
+                'ver_centro_atencion' => '1', 'ver_gerente' => '1',
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => '4',
+                'nombre' => 'Oferta de producto',
+                'ver_centro_atencion' => '0', 'ver_gerente' => '1',
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => '5',
+                'nombre' => 'Cobranza',
+                'ver_centro_atencion' => '0', 'ver_gerente' => '1',
                 'created_at' => now(), 'updated_at' => now()
             ],
         ]);

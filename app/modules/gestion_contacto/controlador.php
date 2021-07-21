@@ -17,8 +17,8 @@ class controlador
     public function index() {
         return Response::view('views/index.html', [
             'tipos_llamadas'    => TipoLlamada::select('id', 'nombre')->get(),
-            'tipos_gestion'     => TipoGestion::select('id', 'nombre')->get(),
-            'estatus_gestion'   => EstatusGestion::select('id', 'tipo_id', 'nombre')->get(),
+            'tipos_gestion'     => TipoGestion::select('id', 'nombre')->where('ver_centro_atencion', '1')->get(),
+            'estatus_gestion'   => EstatusGestion::select('id', 'tipo_id', 'nombre')->where('ver_centro_atencion', '1')->get(),
             'gerentes'          => Gerente::select('id', 'region', 'nombre')->get(),
         ]);
     }
@@ -406,6 +406,29 @@ class controlador
                 return Response::json([
                     'ok' => TRUE,
                     'cedula' => $objCliente->cedula
+                ]);
+            break;
+
+            /**
+             * Eliminar gestiones
+             */
+            case 'eliminar-gestion':
+                $gestion_id = Request::input('gestion_id', $requerido = TRUE);
+                $objGestion = Gestion::find($gestion_id);
+
+                if( !Sesion::usuario()->rol->esValido('gestion_eliminar') ) {
+                    throw new Exception('No tiene permisos para realizar esta operación.');
+                }
+
+                DB::beginTransaction();
+                $objGestion->delete();
+                DB::commit();
+                
+                $gestiones = gestiones_datatable($objGestion->ci);
+
+                // Retornamos
+                return Response::json([
+                    'gestiones' => $gestiones
                 ]);
             break;
 

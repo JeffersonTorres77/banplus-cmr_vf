@@ -11,6 +11,7 @@
 {% block js %}
 <script>
     const USUARIO_ID = `{{ USUARIO.id }}`;
+    const ELIMINAR_GESTION = {{ (PERMISOS.gestion_eliminar) ? 'true' : 'false' }}
 </script>
 <script src="{{ public_file('index.js') }}"></script>
 {% endblock %}
@@ -619,6 +620,33 @@
                 </button>
                 <button class="btn btn-primary" style="width: 100px;" type="submit">
                     Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL ELIMINAR GESTION -->
+<div class="modal fade" id="modal-eliminar-gestion">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="mb-0">Eliminar registro de la gestión</h5>
+                <button class="close" type="button" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" name="gestion_id">
+                <p class="mb-0">
+                    ¿Esta seguro que desea eliminar la gestión?<br>
+                    Esta acción es irreversible.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" style="width: 100px;" type="button" data-dismiss="modal">
+                    Cerrar
+                </button>
+                <button class="btn btn-danger" style="width: 100px;" type="submit">
+                    Eliminar
                 </button>
             </div>
         </form>

@@ -335,6 +335,9 @@ $("#tipo_gestion").on('change', function() {
                     <button class="btn btn-sm btn-outline-primary ml-2 comentario" style="padding: 0rem .40em;">
                         <i class="fas fa-eye fa-xs"></i>
                     </button>
+                    ${(ELIMINAR_GESTION) ? `<button class="btn btn-sm btn-outline-danger eliminar ml-0" style="padding: 0rem .40em;">
+                    <i class="fas fa-trash-alt fa-xs"></i>
+                    </button>` : ''}
                 </div>`;
             }
          },
@@ -469,3 +472,35 @@ $("#tipo_gestion").on('change', function() {
          }
      });
  });
+
+/**
+ * Eliminar gestion
+ */
+$("#tabla-gestion").on('click', '.eliminar', function() {
+    let data = table_gestion.row( $(this).parents('tr') ).data();
+    $("#modal-eliminar-gestion form [name=gestion_id]").val( data.id );
+    $("#modal-eliminar-gestion").modal('show');
+});
+
+$("#modal-eliminar-gestion form").on('submit', function(e) {
+    e.preventDefault();
+
+    AJAX.enviar({
+        url: `${BASE_URL}/Gestion_Contacto/API/eliminar-gestion/`,
+        data: Form.json( $("#modal-eliminar-gestion form") ),
+        antes() {
+            Loader.show();
+        },
+        error(mensaje) {
+            Alerta.error('Eliminar gestión', mensaje);
+        },
+        ok(data) {
+            actualizar_tabla_gestion(data.gestiones);
+            $("#modal-eliminar-gestion").modal('hide');
+            Alerta.ok('Eliminar gestión', 'Gestión eliminada exitosamente.');
+        },
+        final() {
+            Loader.hide();
+        }
+    });
+});

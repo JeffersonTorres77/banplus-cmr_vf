@@ -62,6 +62,10 @@ class table_permisos_roles
                 'id' => 8,
                 'rol_id' => 4, 'permiso_id' => 4
             ],
+            [
+                'id' => 9,
+                'rol_id' => 1, 'permiso_id' => 5
+            ],
         ]);
         DB::unprepared("SET IDENTITY_INSERT {$this->table} OFF");
 

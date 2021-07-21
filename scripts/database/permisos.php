@@ -50,6 +50,12 @@ class table_permisos
                 'slug' => 'menu_gestion_contacto_gerencia',
                 'description' => 'Menu de gestion (Gerencia)',
                 'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => 5,
+                'slug' => 'gestion_eliminar',
+                'description' => 'Eliminar gestiones',
+                'created_at' => now(), 'updated_at' => now()
             ]
         ]);
         DB::unprepared("SET IDENTITY_INSERT {$this->table} OFF");
