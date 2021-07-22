@@ -26,7 +26,8 @@ $("#form-search").on('submit', function(e) {
             if(!data.encontrado) {
                 limpiar_ventana();
                 $("[data=cedula]").html(data.cedula);
-                $("#modal-usuario-no-encontrado").modal('show');
+                Alerta.error("Consulta de cliente", "Cliente no encontrado.");
+                // $("#modal-usuario-no-encontrado").modal('show');
                 return;
             }
 

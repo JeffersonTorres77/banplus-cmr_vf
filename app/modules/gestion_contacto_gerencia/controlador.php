@@ -404,6 +404,7 @@ class controlador
              * Registrar cliente temporal
              */
             case 'registrar-cliente':
+                throw new Exception("Esta opción no esta habilitada.");
                 $cedula                     = Request::input('cedula', $requerido = TRUE);
                 $nombre                     = Request::input('nombre', $requerido = TRUE);
                 $segmento                   = Request::input('segmento', $requerido = TRUE);
