@@ -313,12 +313,14 @@ var table_gestion = $("#tabla-gestion").DataTable({
                 if(d.length > limite) d = d.substr(0, limite - 3) + "...";
                 return `<div class="d-flex justify-content-between">
                     <span>${d}</span>
-                    <button class="btn btn-sm btn-outline-primary ml-2 comentario" style="padding: 0rem .40em;">
-                        <i class="fas fa-eye fa-xs"></i>
-                    </button>
-                    ${(ELIMINAR_GESTION) ? `<button class="btn btn-sm btn-outline-danger eliminar ml-0" style="padding: 0rem .40em;">
-                    <i class="fas fa-trash-alt fa-xs"></i>
-                    </button>` : ''}
+                    <div>
+                        <button class="btn btn-sm btn-outline-primary ml-2 comentario" style="padding: 0rem .40em;">
+                            <i class="fas fa-eye fa-xs"></i>
+                        </button>
+                        ${(ELIMINAR_GESTION) ? `<button class="btn btn-sm btn-outline-danger eliminar ml-0" style="padding: 0rem .40em;">
+                            <i class="fas fa-trash-alt fa-xs"></i>
+                        </button>` : ''}
+                    </div>
                 </div>`;
             }
         },
