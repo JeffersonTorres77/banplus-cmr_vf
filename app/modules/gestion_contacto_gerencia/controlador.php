@@ -332,15 +332,27 @@ class controlador
                 $objEstatus_gestion = EstatusGestion::find($estatus_gestion_id);
                 if($objEstatus_gestion == NULL) throw new Exception('Estatus de gestión invalido.');
 
-                $objResolucion_comite = EstatusGestion::find($resolucion_comite_id);
-                if($objResolucion_comite == NULL) throw new Exception('Resolucion de comite invalida.');
+                if( !empty($resolucion_comite_id) ) {
+                    $objResolucion_comite = EstatusGestion::find($resolucion_comite_id);
+                    if($objResolucion_comite == NULL) throw new Exception('Resolucion de comite invalida.');
+                    $resolucion_comite_id = $objResolucion_comite->id;
+                }
+                else {
+                    $resolucion_comite_id = NULL;
+                }
 
-                $objMembresia_president = EstatusGestion::find($membresia_president_id);
-                if($objMembresia_president == NULL) throw new Exception('Membresia President invalida.');
+                if( !empty($membresia_president_id) ) {
+                    $objMembresia_president = EstatusGestion::find($membresia_president_id);
+                    if($objMembresia_president == NULL) throw new Exception('Membresia President invalida.');
+                    $membresia_president_id = $objMembresia_president->id;
+                }
+                else {
+                    $membresia_president_id = NULL;
+                }
 
-                if( empty($fecha_asignacion) ) throw new Exception('La fecha de asignación no puede estar vacia.');
-                if( empty($fecha_comite) ) throw new Exception('La fecha de comite no puede estar vacia.');
-                if( empty($fecha_pago) ) throw new Exception('La fecha de pago no puede estar vacia.');
+                if( empty($fecha_asignacion) ) $fecha_asignacion = NULL;
+                if( empty($fecha_comite) ) $fecha_comite = NULL;
+                if( empty($fecha_pago) ) $fecha_pago = NULL;
 
                 // Valores por defecto
                 $fecha_gestion = now('Y-m-d');
@@ -358,9 +370,9 @@ class controlador
                 $objGestion->tipo_gestion_id            = $objEstatus_gestion->tipo_id;
                 $objGestion->estatus_gestion_id         = $objEstatus_gestion->id;
                 $objGestion->comentario                 = $comentario;
-                $objGestion->resolucion_comite_id       = $objResolucion_comite->id;
+                $objGestion->resolucion_comite_id       = $resolucion_comite_id;
                 $objGestion->fecha_comite               = $fecha_comite;
-                $objGestion->membresia_president_id     = $objMembresia_president->id;
+                $objGestion->membresia_president_id     = $membresia_president_id;
                 $objGestion->fecha_pago                 = $fecha_pago;
                 $objGestion->save();
 
@@ -404,6 +416,7 @@ class controlador
              * Registrar cliente temporal
              */
             case 'registrar-cliente':
+                throw new Exception("Esta opción no esta habilitada.");
                 $cedula                     = Request::input('cedula', $requerido = TRUE);
                 $nombre                     = Request::input('nombre', $requerido = TRUE);
                 $segmento                   = Request::input('segmento', $requerido = TRUE);

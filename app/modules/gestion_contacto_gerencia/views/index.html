@@ -365,7 +365,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Fecha de asignación</label>
                     <div class="col-md-9">
-                        <input type="date" class="form-control" required name="fecha_asignacion">
+                        <input type="date" class="form-control" name="fecha_asignacion">
                     </div>
                 </div>
 
@@ -426,7 +426,8 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Resolución de Comité</label>
                     <div class="col-md-9">
-                        <select class="form-control" name="resolucion_comite" required>
+                        <select class="form-control" name="resolucion_comite">
+                            <option value=""></option>
                             {% for row in resolucion_comite %}
                             <option value="{{ row.id }}">{{ row.nombre }}</option>
                             {% endfor %}
@@ -437,14 +438,15 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Fecha de comité</label>
                     <div class="col-md-9">
-                        <input type="date" class="form-control" name="fecha_comite" required>
+                        <input type="date" class="form-control" name="fecha_comite">
                     </div>
                 </div>
 
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Membresía President</label>
                     <div class="col-md-9">
-                        <select class="form-control" name="membresia_president" required>
+                        <select class="form-control" name="membresia_president">
+                            <option value=""></option>
                             {% for row in membresia_president %}
                             <option value="{{ row.id }}">{{ row.nombre }}</option>
                             {% endfor %}
@@ -455,7 +457,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 col-form-label">Fecha de pago</label>
                     <div class="col-md-9">
-                        <input type="date" class="form-control" name="fecha_pago" required>
+                        <input type="date" class="form-control" name="fecha_pago">
                     </div>
                 </div>
             </div>
@@ -503,7 +505,7 @@
 </div>
 
 <!-- MODAL USUARIO NO ENCONTRADO -->
-<div class="modal fade" id="modal-usuario-no-encontrado">
+<!-- <div class="modal fade" id="modal-usuario-no-encontrado">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header bg-warning">
@@ -523,10 +525,10 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <!-- MODAL REGISTRO CLIENTE -->
-<div class="modal fade" id="modal-registro-cliente">
+<!-- <div class="modal fade" id="modal-registro-cliente">
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
         <form class="modal-content">
             <div class="modal-header bg-primary">
@@ -555,7 +557,7 @@
                             <input type="text" class="form-control" name="segmento" placeholder="Segmento..." required>
                         </div>
                     </div>
-                    <!-- //////////////////////////// -->
+                    
                     <div class="col-4">
                         <div class="form-group">
                             <label class="mb-1">Segmento Membresía</label>
@@ -574,7 +576,7 @@
                             <input type="number" step="0.01" min="0" class="form-control" name="monto_uvc" placeholder="Monto UVC..." required>
                         </div>
                     </div>
-                    <!-- //////////////////////////// -->
+                    
                     <div class="col-4">
                         <div class="form-group">
                             <label class="mb-1">Gte. Bca. P.</label>
@@ -593,7 +595,7 @@
                             <input type="text" class="form-control" name="vpr_juridico" placeholder="VPR Jurídico..." required>
                         </div>
                     </div>
-                    <!-- //////////////////////////// -->
+                    
                     <div class="col-4">
                         <div class="form-group">
                             <label class="mb-1">Celular</label>
@@ -624,7 +626,7 @@
             </div>
         </form>
     </div>
-</div>
+</div> -->
 
 <!-- MODAL ELIMINAR GESTION -->
 <div class="modal fade" id="modal-eliminar-gestion">
