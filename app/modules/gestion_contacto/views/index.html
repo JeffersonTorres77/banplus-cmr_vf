@@ -18,7 +18,8 @@
 {% block js %}
 <script>
     const USUARIO_ID = `{{ USUARIO.id }}`;
-    const ELIMINAR_GESTION = {{ (PERMISOS.gestion_eliminar) ? 'true' : 'false' }}
+    const ELIMINAR_GESTION = {{ (PERMISOS.gestion_eliminar) ? 'true' : 'false' }};
+    const CERRAR_GESTION = {{ (PERMISOS.gestion_cerrar) ? 'true' : 'false' }};
 </script>
 <script src="{{ public_file('index.js') }}"></script>
 {% endblock %}

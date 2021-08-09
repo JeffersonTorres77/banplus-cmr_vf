@@ -20,7 +20,7 @@ class table_gestiones
             $table->integer('tipo_llamada_id')->unsigned()->index();
             $table->foreign('tipo_llamada_id')->references('id')->on('tipos_llamadas');
 
-            $table->integer('tipo_gestion_id')->unsigned()->index();
+            $table->integer('tipo_gestion_id')->unsigned()->index()->nullable();
             $table->foreign('tipo_gestion_id')->references('id')->on('tipos_gestion');
 
             $table->integer('estatus_gestion_id')->unsigned()->index();

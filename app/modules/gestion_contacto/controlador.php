@@ -253,6 +253,8 @@ class controlador
                 $objEstatus_gestion = EstatusGestion::find($estatus_gestion_id);
                 if($objEstatus_gestion == NULL) throw new Exception('Estatus de gestión invalido.');
 
+                $tipo_gestion = ( $objEstatus_gestion->tipo_id == NULL ) ? $tipo_gestion_id : $objEstatus_gestion->tipo_id ;
+
                 // Valores por defecto
                 $fecha_gestion = now('Y-m-d');
                 $objEjecutivo = Sesion::usuario();
@@ -266,7 +268,7 @@ class controlador
                 $objGestion->ci                         = $cedula;
                 $objGestion->usuario_id                 = $objEjecutivo->id;
                 $objGestion->tipo_llamada_id            = $objTipo_llamada->id;
-                $objGestion->tipo_gestion_id            = $objEstatus_gestion->tipo_id;
+                $objGestion->tipo_gestion_id            = $tipo_gestion;
                 $objGestion->estatus_gestion_id         = $objEstatus_gestion->id;
                 $objGestion->comentario                 = $comentario;
                 $objGestion->resolucion_comite_id       = NULL;
@@ -366,18 +368,18 @@ class controlador
              * Modificar cliente temporal
              */
             case 'modificar-cliente':
-                $cedula                     = Request::input('cedula', $requerido = TRUE);
-                $nombre                     = Request::input('nombre', $requerido = TRUE);
-                $segmento                   = Request::input('segmento', $requerido = TRUE);
-                $segmento_membresia         = Request::input('segmento_membresia', $requerido = TRUE);
-                $grupo_vinculacion          = Request::input('grupo_vinculacion', $requerido = TRUE);
-                $monto_uvc                  = Request::input('monto_uvc', $requerido = TRUE);
-                $gerente_banca_persona      = Request::input('gerente_banca_persona', $requerido = TRUE);
-                $gerente_juridico           = Request::input('gerente_juridico', $requerido = TRUE);
-                $vpr_juridico               = Request::input('vpr_juridico', $requerido = TRUE);
-                $celular                    = Request::input('celular', $requerido = TRUE);
-                $otro_telefono              = Request::input('otro_telefono', $requerido = TRUE);
-                $correo                     = Request::input('correo', $requerido = TRUE);
+                $cedula                 = Request::input('cedula', $requerido = TRUE);
+                $nombre                 = Request::input('nombre', $requerido = TRUE);
+                $segmento               = Request::input('segmento', $requerido = TRUE);
+                $segmento_membresia     = Request::input('segmento_membresia', $requerido = TRUE);
+                $grupo_vinculacion      = Request::input('grupo_vinculacion', $requerido = TRUE);
+                $monto_uvc              = Request::input('monto_uvc', $requerido = TRUE);
+                $gerente_banca_persona  = Request::input('gerente_banca_persona', $requerido = TRUE);
+                $gerente_juridico       = Request::input('gerente_juridico', $requerido = TRUE);
+                $vpr_juridico           = Request::input('vpr_juridico', $requerido = TRUE);
+                $celular                = Request::input('celular', $requerido = TRUE);
+                $otro_telefono          = Request::input('otro_telefono', $requerido = TRUE);
+                $correo                 = Request::input('correo', $requerido = TRUE);
                 
                 if( !is_numeric($monto_uvc) ) throw new Exception("El campo 'Monto UVC' debe ser numerico.");
                 $monto_uvc = floatval( $monto_uvc );

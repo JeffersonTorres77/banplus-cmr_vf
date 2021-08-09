@@ -11,7 +11,7 @@ class table_estatus_gestion
         DB::schema()->create($this->table, function ($table) {
             $table->increments('id');
 
-            $table->integer('tipo_id')->unsigned()->index();
+            $table->integer('tipo_id')->unsigned()->index()->nullable();
             $table->foreign('tipo_id')->references('id')->on('tipos_gestion');
 
             $table->string('nombre');
@@ -35,31 +35,31 @@ class table_estatus_gestion
             [
                 'id' => '1', 'tipo_id' => '1',
                 'nombre' => 'Se solvento reclamo',
-                'ver_centro_atencion' => '1', 'ver_gerente' => '1',
+                'ver_centro_atencion' => '0', 'ver_gerente' => '1',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
                 'id' => '2', 'tipo_id' => '1',
                 'nombre' => 'Pendiente por solventar',
-                'ver_centro_atencion' => '1', 'ver_gerente' => '1',
+                'ver_centro_atencion' => '0', 'ver_gerente' => '1',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
                 'id' => '3', 'tipo_id' => '2',
                 'nombre' => 'Cliente informado',
-                'ver_centro_atencion' => '1', 'ver_gerente' => '1',
+                'ver_centro_atencion' => '0', 'ver_gerente' => '1',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
                 'id' => '4', 'tipo_id' => '3',
                 'nombre' => 'Interesado',
-                'ver_centro_atencion' => '1', 'ver_gerente' => '1',
+                'ver_centro_atencion' => '0', 'ver_gerente' => '1',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
                 'id' => '5', 'tipo_id' => '3',
                 'nombre' => 'No interesado',
-                'ver_centro_atencion' => '1', 'ver_gerente' => '1',
+                'ver_centro_atencion' => '0', 'ver_gerente' => '1',
                 'created_at' => now(), 'updated_at' => now()
             ],
             [
@@ -126,6 +126,18 @@ class table_estatus_gestion
                 'id' => '16', 'tipo_id' => '5',
                 'nombre' => 'Sin posible contacto',
                 'ver_centro_atencion' => '0', 'ver_gerente' => '1',
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => '17', 'tipo_id' => NULL,
+                'nombre' => 'Pendiente',
+                'ver_centro_atencion' => '1', 'ver_gerente' => '0',
+                'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => '18', 'tipo_id' => NULL,
+                'nombre' => 'Cerrado',
+                'ver_centro_atencion' => '1', 'ver_gerente' => '0',
                 'created_at' => now(), 'updated_at' => now()
             ],
         ]);

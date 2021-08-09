@@ -211,6 +211,7 @@ $("#modal-registro-gestion form").on('submit', function(e) {
  * Selectores del modal
  */
 function actualizar_select_estatus_gestion() {
+    return;
     let tipo_gestion_id = $("#tipo_gestion").val();
     let options = $("#estatus_gestion option");
     let selected_id = null;
@@ -317,6 +318,9 @@ var table_gestion = $("#tabla-gestion").DataTable({
                         <button class="btn btn-sm btn-outline-primary ml-2 comentario" style="padding: 0rem .40em;">
                             <i class="fas fa-eye fa-xs"></i>
                         </button>
+                        ${(CERRAR_GESTION) ? `<button class="btn btn-sm btn-outline-success cerrar ml-0" style="padding: 0rem .40em;">
+                            <i class="fas fa-edit fa-xs"></i>
+                        </button>` : ''}
                         ${(ELIMINAR_GESTION) ? `<button class="btn btn-sm btn-outline-danger eliminar ml-0" style="padding: 0rem .40em;">
                             <i class="fas fa-trash-alt fa-xs"></i>
                         </button>` : ''}

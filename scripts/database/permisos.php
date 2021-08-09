@@ -56,6 +56,12 @@ class table_permisos
                 'slug' => 'gestion_eliminar',
                 'description' => 'Eliminar gestiones',
                 'created_at' => now(), 'updated_at' => now()
+            ],
+            [
+                'id' => 6,
+                'slug' => 'gestion_cerrar',
+                'description' => 'Cerrar gestiones',
+                'created_at' => now(), 'updated_at' => now()
             ]
         ]);
         DB::unprepared("SET IDENTITY_INSERT {$this->table} OFF");
