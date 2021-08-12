@@ -100,3 +100,11 @@
 .sidebar-mini.sidebar-collapse .nav-sidebar .nav-header {
     display: block !important;
 }
+
+/* Select 2 */
+.select2-container .select2-selection--single {
+    height: inherit !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px;
+}

@@ -1,0 +1,146 @@
+{% extends template('adminlte') %}
+
+{% block css %}
+<style>
+.fa-btn {
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    border: 1px solid #0063ce;
+    width: 20px;
+    height: 20px;
+    font-size: 11px;
+    margin-left: 5px;
+    transition-duration: .2s;
+}
+.fa-btn:hover {
+    background: white;
+    color: #007bff;
+}
+</style>
+{% endblock %}
+
+{% block js %}
+<script src="{{ public_file('index.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="p-3">
+    <form class="card card-primary card-outline" id="form-busqueda">
+        <div class="card-header">
+            <div class="card-title">Reportes</div>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label class="mb-1">
+                    Rango de fecha
+                    <button type="button" class="fa-btn" data-toggle="collapse" data-target="#info-rango-fecha">
+                        <i class="fas fa-info"></i>
+                    </button>
+                </label>
+                <div class="input-group mb-3">
+                    <input type="date" class="form-control" name="fecha_inicio">
+                    <input type="date" class="form-control" name="fecha_fin">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="mb-1">Tipo de gestión</label>
+                <select name="tipo_gestion_id" class="form-control">
+                    <option value="">Todas</option>
+                    {% for tipo in tipos_gestion %}
+                    <option value="{{ tipo.id }}">{{ tipo.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="collapse" id="info-rango-fecha">
+                <div class="alert alert-info mb-3">
+                    <div>
+                        <i class="fas fa-circle mr-1"></i>
+                        El rango de fecha afectara las gestiones que tenga el cliente en base a la fecha de gestión.
+                    </div>
+                    <div>
+                        <i class="fas fa-circle mr-1"></i>
+                        Para desactivar esta opción deje ambos campos en blanco.
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-0">
+                <label class="mb-1">Ejecutivo</label>
+                <select class="form-control" name="ejecutivo_id" required>
+                    {% for usuario in usuarios %}
+                    <option value="{{ usuario.id }}">{{ usuario.nombres }} {{ usuario.apellidos }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="card-footer text-right">
+            <button class="btn btn-primary" type="submit" style="width: 100px;">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </div>
+    </form>
+
+    <div class="collapse" id="collapse-resultado">
+        <div class="card card-outline card-info">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="card-title">Resultado de la busqueda</div>
+                    <button class="close" type="button" data-toggle="collapse" data-target="#collapse-resultado">&times;</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6">
+                        <b>Ejecutivo:</b> <span data="resp-ejecutivo"></span>
+                    </div>
+                    <div class="col-6">
+                        <b>Tipo de gestión:</b> <span data="resp-tipo_gestion"></span>
+                    </div>
+                    <div class="col-12">
+                        <b>Rango de fecha:</b> <span data="resp-rango_fecha"></span>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div>
+                    <b>Tiempo total de atención:</b> <span data="tiempo_total_gestiones"></span><br>
+                    <b>Gestiones:</b> <span data="cantidad_gestiones"></span><br>
+                    <b>Tiempo promedio de atención:</b> <span data="tiempo_promedio_gestiones"></span><br>
+                </div>
+
+                <hr>
+
+                <h5 class="mb-2"> <b>Gestiones</b> </h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped table-sm mb-0 w-100" id="tabla-gestion">
+                        <thead>
+                            <tr>
+                                <th class="text-truncate">Fecha de gestión</th>
+                                <th class="text-truncate">Fecha asignación</th>
+                                <th class="text-truncate">Ejecutivo</th>
+                                <th class="text-truncate">Tipo de gestión</th>
+                                <th class="text-truncate">Tipo de llamada</th>
+                                <th class="text-truncate">Fecha de cierre</th>
+                                <th class="text-truncate">Estatus de gestión</th>
+                                <th class="text-truncate">Area resolutoria</th>
+                                <th class="text-truncate">Tiempo de atención</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="100">
+                                    <h5 class="text-center mb-0 p-3">. . .</h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -34,6 +34,20 @@
     </li>
     {% endif %}
 
+    <!-- REPORTES -->
+    {% if PERMISOS.menu_reportes %}
+    <li class="nav-item">
+        <a
+            href="{{ BASE_URL }}/Reportes/"
+            class="nav-link {{ (CONTROLADOR == 'reportes') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-clipboard-list"></i>
+            <p>
+                Reportes
+            </p>
+        </a>
+    </li>
+    {% endif %}
+
     {% if PERMISOS.menu_roles or PERMISOS.menu_usuarios %}
         <li class="nav-header">Sistema</li>
 
