@@ -513,10 +513,21 @@ function gestiones_datatable($ci) {
 
         $gestiones[$key]->es_gerencia = ($gestion->fecha_asignacion != NULL) ? TRUE : FALSE;
 
-        $gestiones[$key]->fecha_apertura = date_format( date_create($gestion->fecha_apertura), 'Y/m/d - H:i' );
-        $gestiones[$key]->fecha_cierre = date_format( date_create($gestion->fecha_cierre), 'Y/m/d - H:i' );
+        $fecha_apertura = $gestion->fecha_apertura;
+        $fecha_cierre = $gestion->fecha_cierre;
 
-        $gestiones[$key]->tiempo_ejecucion = tiempo_ejecucion($gestion->fecha_apertura, $gestion->fecha_cierre);
+        $gestiones[$key]->fecha_apertura = date_to_text($fecha_apertura, 'Y-m-d - H:i');
+        if($gestion->fecha_cierre != NULL) {
+            $gestiones[$key]->fecha_cierre = date_to_text($fecha_cierre, 'Y-m-d - H:i');
+            $gestiones[$key]->tiempo_ejecucion = timestamp_to_text(strtotime($fecha_cierre) - strtotime($fecha_apertura));
+        } else {
+            $gestiones[$key]->fecha_cierre = NULL;
+            $gestiones[$key]->tiempo_ejecucion = timestamp_to_text(strtotime(now()) - strtotime($fecha_apertura));
+        }
+
+        $gestiones[$key]->_timestamp_apertura = strtotime($gestion->fecha_apertura);
+        $gestiones[$key]->_timestamp_cierre = strtotime($gestion->fecha_cierre);
+        $gestiones[$key]->_timestamp_resta = (strtotime($gestion->fecha_cierre) - strtotime($gestion->fecha_apertura));
     }
     return $gestiones;
 }
