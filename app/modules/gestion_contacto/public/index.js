@@ -246,16 +246,15 @@ var table_gestion = $("#tabla-gestion").DataTable({
             class: 'text-center text-truncate',
             render: function(d, type, row) {
                 if(d == null) return vacio_defecto;
-                let date = new Date(d);
-                return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+                return d;
             }
         },
         {
             data: 'fecha_gestion',
             class: 'text-center text-truncate',
             render: function(d, type, row) {
-                let date = new Date(d);
-                return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+                if(d == null) return vacio_defecto;
+                return d;
             }
         },
         {
@@ -286,8 +285,7 @@ var table_gestion = $("#tabla-gestion").DataTable({
             class: 'text-center text-truncate',
             render: function(d, type, row) {
                 if(d == null) return vacio_defecto;
-                let date = new Date(d);
-                return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+                return d;
             }
         },
         {
@@ -302,8 +300,7 @@ var table_gestion = $("#tabla-gestion").DataTable({
             class: 'text-center text-truncate',
             render: function(d, type, row) {
                 if(d == null) return vacio_defecto;
-                let date = new Date(d);
-                return `${date.getDate() + 1}/${date.getMonth() + 1}/${date.getFullYear()}`;
+                return d;
             }
         },
         {
@@ -453,6 +450,64 @@ $("#btn-modificar-datos").on('click', function() {
             $("#form-search [name=cedula]").val(data.cedula);
             $("#form-search").submit();
             Alerta.ok('Modificar Cliente', 'Cliente modificar exitosamente.');
+        },
+        final() {
+            Loader.hide();
+        }
+    });
+});
+
+/**
+ * Cambiar estatus de la gestion
+ */
+$("#tabla-gestion").on('click', '.cerrar', function() {
+    let data = table_gestion.row( $(this).parents('tr') ).data();
+    console.log( data );
+
+    if( data.es_gerencia ) {
+        Alerta.warning('Cambiar Estatus de la Gestión', 'No puede modificar el estatus de una gestión de gerencia.');
+        return;
+    }
+
+    if(data.fecha_cierre == null) {
+        $("#cierre").css('display', 'none');
+        $("#no_cierre").css('display', 'block');
+    } else {
+        $("#cierre").css('display', 'block');
+        $("#no_cierre").css('display', 'none');
+    }
+
+    $("#modal-cambiar-estatus-gestion form [name=gestion_id]").val( data.id );
+    $("#modal-cambiar-estatus-gestion form [name=estatus_id]").val( data.estatus_gestion_id );
+    $("#modal-cambiar-estatus-gestion form [data=fecha_apertura]").html( data.fecha_apertura );
+    $("#modal-cambiar-estatus-gestion form [data=fecha_cierre]").html( data.fecha_cierre );
+    $("#modal-cambiar-estatus-gestion form [data=tiempo_ejecucion]").html( data.tiempo_ejecucion );
+
+    if( $("#modal-cambiar-estatus-gestion form [name=estatus_id]").val() == null ) {
+        $("#modal-cambiar-estatus-gestion form [name=estatus_id] option:first-child").attr('selected', '')
+    } else {
+        $("#modal-cambiar-estatus-gestion form [name=estatus_id] option").removeAttr('selected');
+    }
+
+    $("#modal-cambiar-estatus-gestion").modal('show');
+});
+
+$("#modal-cambiar-estatus-gestion form").on('submit', function(e) {
+    e.preventDefault();
+
+    AJAX.enviar({
+        url: `${BASE_URL}/Gestion_Contacto/API/cambiar-estatus-gestion/`,
+        data: Form.json( $("#modal-cambiar-estatus-gestion form") ),
+        antes() {
+            Loader.show();
+        },
+        error(mensaje) {
+            Alerta.error('Cambiar Estatus de la Gestión', mensaje);
+        },
+        ok(data) {
+            actualizar_tabla_gestion(data.gestiones);
+            $("#modal-cambiar-estatus-gestion").modal('hide');
+            Alerta.ok('Cambiar Estatus de la Gestión', 'Gestión modificada exitosamente.');
         },
         final() {
             Loader.hide();

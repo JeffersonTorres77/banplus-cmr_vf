@@ -38,6 +38,8 @@ class table_gestiones
 
             $table->date('fecha_pago')->nullable();
             $table->timestamps();
+            $table->dateTime('fecha_apertura')->nullable();
+            $table->dateTime('fecha_cierre')->nullable();
         });
 
         return $this;

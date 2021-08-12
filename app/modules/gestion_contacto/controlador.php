@@ -31,6 +31,9 @@ class controlador
             case 'consultar_datos':
                 $cedula = Request::input('cedula', $requerido = TRUE);
                 $objPresident = President::where('ci', $cedula)->first();
+
+                $_SESSION['ci_consultada'] = now();
+
                 if($objPresident == NULL)
                 {
                     // Si no se encuentra en la tabla de president, buscamos en la de clientes temporales
@@ -275,10 +278,13 @@ class controlador
                 $objGestion->fecha_comite               = NULL;
                 $objGestion->membresia_president_id     = NULL;
                 $objGestion->fecha_pago                 = NULL;
+                $objGestion->fecha_apertura             = $_SESSION['ci_consultada'];
+                $objGestion->fecha_cierre               = ($objEstatus_gestion->de_cierre) ? now() : NULL;
                 $objGestion->save();
 
                 DB::commit();
 
+                $_SESSION['ci_consultada'] = now();
                 $gestiones = gestiones_datatable($cedula);
 
                 // Retornamos
@@ -413,6 +419,47 @@ class controlador
             break;
 
             /**
+             * Cambiar estatus gestion
+             */
+            case 'cambiar-estatus-gestion':
+                $gestion_id = Request::input('gestion_id', $requerido = TRUE);
+                $objGestion = Gestion::find($gestion_id);
+                if($objGestion == NULL) throw new Exception('Gestion invalida.');
+
+                $estatus_id = Request::input('estatus_id', $requerido = TRUE);
+                $objEstatus = EstatusGestion::find($estatus_id);
+                if($objEstatus == NULL) throw new Exception('Estatus invalido.');
+
+                if( !Sesion::usuario()->rol->esValido('gestion_cerrar') ) {
+                    throw new Exception('No tiene permisos para realizar esta operación.');
+                }
+
+                if($objGestion->fecha_asignacion != NULL) {
+                    throw new Exception('Esta gestión no se puede modificar.');
+                }
+
+                if($objGestion->fecha_cierre != NULL) {
+                    throw new Exception('Esta gestión ya esta cerrada.');
+                }
+
+                DB::beginTransaction();
+
+                $objGestion->estatus_gestion_id = $objEstatus->id;
+                if($objEstatus->de_cierre) $objGestion->fecha_cierre = now();
+
+                $objGestion->save();
+
+                DB::commit();
+                
+                $gestiones = gestiones_datatable($objGestion->ci);
+
+                // Retornamos
+                return Response::json([
+                    'gestiones' => $gestiones
+                ]);
+            break;
+
+            /**
              * Eliminar gestiones
              */
             case 'eliminar-gestion':
@@ -463,6 +510,13 @@ function gestiones_datatable($ci) {
         
         $membresia_president = MembresiaPresident::select('nombre')->where('id', $gestion->membresia_president_id)->first();
         if($membresia_president != NULL) $gestiones[$key]->membresia_president = $membresia_president->nombre;
+
+        $gestiones[$key]->es_gerencia = ($gestion->fecha_asignacion != NULL) ? TRUE : FALSE;
+
+        $gestiones[$key]->fecha_apertura = date_format( date_create($gestion->fecha_apertura), 'Y/m/d - H:i' );
+        $gestiones[$key]->fecha_cierre = date_format( date_create($gestion->fecha_cierre), 'Y/m/d - H:i' );
+
+        $gestiones[$key]->tiempo_ejecucion = tiempo_ejecucion($gestion->fecha_apertura, $gestion->fecha_cierre);
     }
     return $gestiones;
 }
